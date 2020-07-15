@@ -14,4 +14,17 @@
         记得push之前在群里说下
 
 (4)多人开发的话，想commit/push可能会提示conflict， 把conflict resolve就行了
-    跟上一个push的队友对下有什么区别，再决定要不要push
+    e.g., a在自己local文件夹里加了一些代码x然后push到了github上，
+    b在写了代码y以后也想push到github上，但是出现了以下error：
+	To https://github.com/zschen211/cs411-project.git
+ 	! [rejected]        master -> master (fetch first)
+	error: failed to push some refs to 'https://github.com/zschen211/cs411-	
+	project.git'
+	hint: Updates were rejected because the remote contains work that you do
+	hint: not have locally. This is usually caused by another repository pushing
+	hint: to the same ref. You may want to first integrate the remote changes
+	hint: (e.g., 'git pull ...') before pushing again.
+	hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+    这时候在terminal里跑 git pull –-rebase，更新自己local文件夹到a上次push代码x的commit，
+    再跑 git push就能把b的y代码push上去
+    注：跟上一个push的队友对下有什么区别，再决定要不要push！！
