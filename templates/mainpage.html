@@ -1,23 +1,54 @@
 <!DOCTYPE html>
 <html>
   <head lang="en">
-  <title>main page</title>
+<style>
+    h3 {
+        display: inline-block;
+
+    }
+    img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .type_header{
+        display: flex;
+        direction: row;
+        justify-content: space-around;
+    }
+</style>
+  <title>Page Title</title>
   </head>
   <body>
 
   <h1>Rate U of I</h1>
   <p style="text-align:center;">Write website summary here</p>
   <hr>
-  <h3>Restaurant</h3>
+  <h3 class="type_header"><span>Restaurant</span>
+    <!--hr-->
+    <span>Hotel</span>
+    <!--hr-->
+    <span>Milk Tea</span>
+    <!--hr-->
+    <span>Night Bar</span>
+  </h3>
   <hr>
-  <h3>Hotel</h3>
+
+  <!--not sure what is action_page.php but will modity later-->
+  <form style="text-align:center;" action="/action_page.php">
+    <label for="fname">Search:</label>
+    <input type="text" id="search_thing" name="search_content"><br><br>
+    <input type="submit" value="Submit">
+  </form>
+  <!--Click the "Submit" button and the form-data will be sent to a page on the server called "action_page.php". -->
   <hr>
-  <h3>Milk Tea</h3>
-  <hr>
-  <h3>Night Bar</h3>
+        <p style="text-align: center; font-size: 20px;"><i><b>Insert recommendation below</b></i></p>
+        <img src="cat2.JPG" alt="sample_image", width = 260, height = 260>
+        <p style="text-align: center;">和大佬达成共识.jpg</p>
   <hr>
   <h3>Recent Posts</h3>
   <hr>
-  <h3>About Us</h3>
+  <h4 style="text-align:center;">About Us</h4>
   </body>
 </html>
