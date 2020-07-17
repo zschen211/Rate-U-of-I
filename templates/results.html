@@ -1,0 +1,9 @@
+{% for p in place_list %}
+  <div>
+    {{ p.placeName }}
+  </div>
+{% empty %}
+  <div class="no-post">
+    没有搜索到符合条件的文章
+  </div>
+{% endfor %}

@@ -6,7 +6,7 @@ contSuccess = 0
 # Remove all data from Table
 # Place.objects.all().delete()
 
-with open('apps/Restaurant.csv') as csvfile:
+with open('apps/csv/Restaurant.csv') as csvfile:
     spamreader = csv.reader(csvfile, delimiter=',')
     print('Loading...')
     for row in spamreader:

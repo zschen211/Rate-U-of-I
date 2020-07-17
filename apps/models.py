@@ -11,20 +11,6 @@ class Place(models.Model):
     rating = models.FloatField(default=0)
     users_rating_num = models.IntegerField(default=0)
 
-# class MyCsvModel(CsvModel):
-#     placeName = models.CharField(max_length=50)
-#     placeID = models.CharField(max_length=50, primary_key=True)
-#     business_status = models.CharField(max_length=50)
-#     types = models.CharField(max_length=100)
-#     vicinity = models.CharField(max_length=100)
-#     price_level = models.IntegerField(default=0)
-#     rating = models.IntegerField(default=0)
-#     users_rating_num = models.IntegerField(default=0)
-
-#     class Meta:
-#         dbModel = Place
-#         delimiter = ";"
-
 class User(models.Model):
     userID = models.AutoField(default=0, primary_key=True)
     username = models.IntegerField(default=0)

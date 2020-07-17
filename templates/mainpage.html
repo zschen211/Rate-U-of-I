@@ -32,7 +32,7 @@
   <h1>Rate U of I</h1>
   <p style="text-align:center;">Write website summary here</p>
   <hr>
-  <a href="login_page.html">Log In</a>
+  <a href="{% url 'login' %}">Log In</a>
 
   <h3 class="type_header">
     <!-- will replace href later with our own websites-->
@@ -47,11 +47,12 @@
 
   <hr>
 
-  <!--not sure what is action_page.php but will modity later-->
+  <!--search bar-->
   <div class="search_container">
-    <form style="text-align:center;" action="/action_page.php">
+    <form style="text-align:center;" action="/search/">
+      {% csrf_token %}
       <label for="fname">Search:</label>
-      <input type="text" id="search_thing" name="search_content" placeholder="Search...">
+      <input type="search" id="search_thing" name="search_content" placeholder="Search...">
       <button type="submit"><i class="fa fa-search"></i></button>
     </form>
   </div>
