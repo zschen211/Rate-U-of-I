@@ -1,11 +1,105 @@
 <!DOCTYPE html>
 <html>
   <head lang="en">
-  <title>sign up</title>
+  <title>Signup page</title>
+
+  <link rel="stylesheet" href="signup_page.css">
+
+  <style>
+    h1 {
+      text-align:center;
+    }
+
+    img {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .signup_page {
+      text-align:center;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
   </head>
   <body>
 
-  <h1>Sign Up</h1>
+  <h1>Sign up</h1>
+  <div class="signup_page">
+    <form action="action_page.php" method="post">
+      
+
+      <div class="loginpage">
+        <label for="username"><b>Username: </b></label>
+        <input type="text" name="username" required><br><br>
+
+        <label for="psw"><b>Password: </b></label>
+        <input type="password" name="psw" required><br><br>
+
+        <label for="psw"><b>Comfirm Password: </b></label>
+        <input type="password" name="psw" required><br><br>
+
+        <form action="">
+          <input type="radio" name="gender" value="male"> Male
+          <input type="radio" name="gender" value="female"> Female
+          <input type="radio" name="gender" value="other"> Other
+        </form>
+
+        
+       <!-- <button type="submit">Sign up</button><br><br>
+        <label>
+          <input type="checkbox" checked="checked" name="remember"> Remember me
+        </label>
+      </div> --> 
+    </form>
+  </div>
+
+  <p><b>Country</b></p>
+  <div class="dropdown">
+    <button class="dropbtn">Country</button>
+    <div class="dropdown-content">
+      <a href="#">China</a>
+      <a href="#">France</a>
+      <a href="#">United Kingdom</a>
+      <a href="#">United States</a>
+      <a href="#">Russia</a>
+    </div>
+  </div>
+
+  <p><b>Age</b></p>
+  <div class="dropdown">
+    <button class="dropbtn">Age</button>
+    <div class="dropdown-content">
+      <a href="#">below 15</a>
+      <a href="#">16 ~ 20</a>
+      <a href="#">21 ~ 25</a>
+      <a href="#">25 ~ 35</a>
+      <a href="#">above 55</a>
+    </div>
+  </div>
+
+  <p><b>Ethnicity</b></p>
+  <div class="dropdown">
+    <button class="dropbtn">Ethnicity</button>
+    <div class="dropdown-content">
+      <a href="#">African American</a>
+      <a href="#">Asian</a>
+      <a href="#">Black</a>
+      <a href="#">White</a>
+      <a href="#">Mexican</a>
+      <a href="#">Latino</a>
+    </div>
+  </div>
+  
+  <form action="">
+    <div class="checkboxes">
+      <label for="y"><input type="checkbox" id="1" /> <span>I agree to terms of use</span></label><br>
+      <label for="z"><input type="checkbox" id="2" /> <span>I am not a robot</span></label><br>
+    </div>
+  </form>
+
+  <a href="#" class="button2">Sign Up!</a>
 
   </body>
 </html>
