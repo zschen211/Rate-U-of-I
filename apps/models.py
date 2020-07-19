@@ -12,13 +12,13 @@ class Place(models.Model):
     users_rating_num = models.IntegerField(default=0)
 
 class User(models.Model):
-    userID = models.AutoField(default=0, primary_key=True)
-    username = models.IntegerField(default=0)
+    userID = models.AutoField(primary_key=True)
+    username = models.CharField(max_length=50)
     password = models.CharField(max_length=50)
     gender = models.CharField(max_length=10)
     country = models.CharField(max_length=20)
     ethnicity = models.CharField(max_length=20)
-    age = models.IntegerField(default=0)
+    age = models.IntegerField()
 
 class Rating(models.Model):
     userID = models.ForeignKey('User', on_delete=models.CASCADE,related_name='+')
