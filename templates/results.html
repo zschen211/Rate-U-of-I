@@ -1,7 +1,52 @@
 <html>
   <head>
     <title>search result</title>
+    <link rel="stylesheet" href="../static/css/results.css">
   </head>
+  <style>
+  </style>
+
+  <h1>Search Results</h1>
+
+  <div class="navbar">
+    <a href="{% url 'main_page' %}">Home</a>
+    <a href="#news">Recent</a>
+    <div class="dropdown">
+      <button class="dropbtn">Sort by 
+        <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-content">
+        <a href="#">rating</a>
+        <a href="#">popularity</a>
+        <a href="#">distance</a>
+      </div>
+    </div> 
+
+    <div class="dropdown">
+      <button class="dropbtn">Type
+        <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-content">
+        <a href="#">type 1</a>
+        <a href="#">type 2</a>
+      </div>
+    </div> 
+
+    <div class="dropdown">
+      <button class="dropbtn">Price
+        <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-content">
+        <a href="#">low to high</a>
+        <a href="#">$</a>
+        <a href="#">$$</a>
+        <a href="#">$$$</a>
+        <a href="#">$$$$</a>
+        <a href="#">high to low</a>
+      </div>
+    </div> 
+  </div>
+
 
   <body>
     <ul>
@@ -9,7 +54,14 @@
       {% if place_list %}
         {% for p in place_list %}
         <li>
-          {{ p.placeName }}
+          <div class=itembox>
+            <p style="font-size: 20"><b>{{ p.placeName }}</b></p>
+            <p><b>Location:</b>{{p.vicinity}}</p>
+            <p><b>Rating:</b>{{p.rating}}</p>
+            <p><b>Price Level:</b>{{p.price_level}}</p>
+            <p><b>Status:</b>{{p.business_status}}</p>
+            <p><b>Type:</b>{{p.types.all|join ", "}}</p>
+          </div>
         </li>
         {% endfor %}
       {% else %}

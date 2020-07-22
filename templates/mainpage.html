@@ -4,9 +4,12 @@
   <link rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
+    h1 {
+      font-size: 70px;
+      text-align: center;
+    }
     h3 {
         display: inline-block;
-
     }
     img {
         display: block;
@@ -16,7 +19,7 @@
     a {
       text-align: right;
       display: block;
-      font-size: 16px;
+      font-size: 30px;
       margin-right: 60px;
     }
     .type_header{
@@ -24,16 +27,43 @@
         direction: row;
         justify-content: space-around;
     }
+    .summary1 {
+      width:auto;
+      height:260px;
+      padding: 1%;
+    }
+    .imageicon1 {
+      float:left;
+    }
+
+    .summary2 {
+      width:auto;
+      height:260px;
+      padding:1%;
+    }
+    .imageicon2 {
+      float:right;
+    }
+    h4 {
+      text-align: center;
+      font-size: 40px;
+    }
+
 </style>
   <title>Rate U of I</title>
   </head>
   <body>
 
   <h1>Rate U of I</h1>
-  <p style="text-align:center;">Write website summary here</p>
+  <p style="text-align:center;font-size:25px;">With Rate U of I, discover quality life.</p>
   <hr>
+<<<<<<< HEAD
+  <a href="{% url 'login' %}", style="font-size: 16px">Log In</a>
+  <a href="{% url 'login' %}", style="font-size: 16px">Sign Up</a>
+=======
   <a href="{% url 'login' %}">Log In</a>
   <a href="{% url 'signup' %}">Sign Up</a>
+>>>>>>> d385903764b1e9354957bad00073f31262f7e550
 
   <h3 class="type_header">
     <!-- will replace href later with our own websites-->
@@ -41,7 +71,7 @@
     <!--hr-->
     <a href="https://www.google.com">Hotel</a>
     <!--hr-->
-    <a href="https://www.google.com">Milk Tea</a>
+    <a href="https://www.google.com">Cafe</a>
     <!--hr-->
     <a href="https://www.google.com">Night Bar</a>
   </h3>
@@ -65,6 +95,60 @@
   <hr>
   <h3>Recent Posts</h3>
   <hr>
-  <h4 style="text-align:center;">About Us</h4>
+  <div class='summary1'>
+      <div class='imageicon1'>
+          <img src="../static/img/restaurant.png", alt="restaurant", width = 450, height = 260>
+      </div>
+      <div class='texticon1'>
+      <br><br><br><br>
+      <!-- Restaurant should be a link, will fix later -->
+      <a href="../templates/restaurant_summary.html", style="text-align: center; font-size: 40px">Restaurant</a>
+      </div>
+  </div>
+
+  <hr>
+
+  <div class='summary2'>
+      <div class='imageicon2'>
+          <img src="../static/img/hotel.JPG", alt="hotel", width = 450, height = 260>
+      </div>
+      <div class='texticon2'>
+      <br><br><br><br>
+      <!-- Hotel should be a link, will fix later -->
+      <a href="../templates/hotel_summary.html", style="text-align: center; font-size: 40px">Hotel</a>
+      </div>
+  </div>
+
+  <hr>
+
+  <div class='summary1'>
+      <div class='imageicon1'>
+          <img src="../static/img/cafe.jpg", alt="cafe", width = 450, height = 260>
+      </div>
+      <div class='texticon1'>
+      <br><br><br><br>
+      <!-- Cafe should be a link, will fix later -->
+      <a href="../templates/milktea_summary.html", style="text-align: center; font-size: 40px">Cafe</a>
+      </div>
+  </div>
+
+  <hr>
+
+  <div class='summary2'>
+      <div class='imageicon2'>
+          <img src="../static/img/nightbar.jpg", alt="bar", width = 450, height = 260>
+      </div>
+      <div class='texticon2'>
+      <br><br><br><br>
+      <!-- Night Bar should be a link, will fix later -->
+      <a href="../templates/nightbar_summary.html", style="text-align: center; font-size: 40px">Night Bar</a>
+      </div>
+  </div>
+
+  <hr>
+
+  <footer>
+    <p style="text-align:center;">About Us</p>
+  </footer>
   </body>
 </html>
