@@ -9,7 +9,7 @@
   <h1>Search Results</h1>
 
   <div class="navbar">
-    <a href="{% url 'main_page' %}">Home</a>
+    <a href="{% url 'index' %}">Home</a>
     <a href="#news">Recent</a>
     <div class="dropdown">
       <button class="dropbtn">Sort by 
@@ -60,7 +60,6 @@
             <p><b>Rating:</b>{{p.rating}}</p>
             <p><b>Price Level:</b>{{p.price_level}}</p>
             <p><b>Status:</b>{{p.business_status}}</p>
-            <p><b>Type:</b>{{p.types.all|join ", "}}</p>
           </div>
         </li>
         {% endfor %}

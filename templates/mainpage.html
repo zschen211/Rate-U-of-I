@@ -57,24 +57,13 @@
   <h1>Rate U of I</h1>
   <p style="text-align:center;font-size:25px;">With Rate U of I, discover quality life.</p>
   <hr>
-<<<<<<< HEAD
-  <a href="{% url 'login' %}", style="font-size: 16px">Log In</a>
-  <a href="{% url 'login' %}", style="font-size: 16px">Sign Up</a>
-=======
-  <a href="{% url 'login' %}">Log In</a>
-  <a href="{% url 'signup' %}">Sign Up</a>
->>>>>>> d385903764b1e9354957bad00073f31262f7e550
-
-  <h3 class="type_header">
-    <!-- will replace href later with our own websites-->
-    <a href="https://www.google.com">Restaurant</a>
-    <!--hr-->
-    <a href="https://www.google.com">Hotel</a>
-    <!--hr-->
-    <a href="https://www.google.com">Cafe</a>
-    <!--hr-->
-    <a href="https://www.google.com">Night Bar</a>
-  </h3>
+  {% if user.is_authenticated %}
+    <p>You've logged in!</p>
+    <a href="{% url 'logout' %}" style="font-size: 16px">Log out</a>
+  {% else %}
+    <a href="{% url 'login' %}" style="font-size: 16px">Log In</a>
+    <a href="{% url 'signup' %}" style="font-size: 16px">Sign Up</a>
+  {% endif %}
 
   <hr>
 
@@ -102,7 +91,7 @@
       <div class='texticon1'>
       <br><br><br><br>
       <!-- Restaurant should be a link, will fix later -->
-      <a href="../templates/restaurant_summary.html", style="text-align: center; font-size: 40px">Restaurant</a>
+      <a href="{% url 'restaurant_summary' %}", style="text-align: center; font-size: 40px">Restaurant</a>
       </div>
   </div>
 
@@ -115,7 +104,7 @@
       <div class='texticon2'>
       <br><br><br><br>
       <!-- Hotel should be a link, will fix later -->
-      <a href="../templates/hotel_summary.html", style="text-align: center; font-size: 40px">Hotel</a>
+      <a href="{% url 'hotel_summary' %}", style="text-align: center; font-size: 40px">Hotel</a>
       </div>
   </div>
 
@@ -128,7 +117,7 @@
       <div class='texticon1'>
       <br><br><br><br>
       <!-- Cafe should be a link, will fix later -->
-      <a href="../templates/milktea_summary.html", style="text-align: center; font-size: 40px">Cafe</a>
+      <a href="{% url 'cafe_summary' %}", style="text-align: center; font-size: 40px">Cafe</a>
       </div>
   </div>
 
@@ -141,7 +130,7 @@
       <div class='texticon2'>
       <br><br><br><br>
       <!-- Night Bar should be a link, will fix later -->
-      <a href="../templates/nightbar_summary.html", style="text-align: center; font-size: 40px">Night Bar</a>
+      <a href="{% url 'nightbar_summary' %}", style="text-align: center; font-size: 40px">Night Bar</a>
       </div>
   </div>
 

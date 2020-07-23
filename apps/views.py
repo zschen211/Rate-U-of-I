@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from .models import Place, User
-from .forms import RegisterForm, LoginForm
+from .forms import RegisterForm
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect,HttpResponse
+from django.db import connection, transaction
 
 
 # Create your views here.
@@ -19,35 +20,25 @@ def search(request):
 
 def user_register(request):
     if request.POST:
-        form = RegisterForm(request.POST or None)
+        form = RegisterForm(request.POST)
         if form.is_valid():
+            form.save()
             username = form.cleaned_data['username']
-            try:
-                new_user = User.objects.raw(
-                    "SELECT * FROM User WHERE username = %s", [username]
-                )
-                return HttpResponse('User already exists!')
-            except:
-                form.save()
-                return HttpResponseRedirect('/login/')
-        else:
-            return render(request, 'signup_page.html', {'form':form})
+            password = form.cleaned_data['password1']
+            gender = form.cleaned_data['gender']
+            country = form.cleaned_data['country']
+            age = form.cleaned_data['age']
+            ethnicity = form.cleaned_data['ethnicity']
+            print(username, password, gender, country, age, ethnicity)
+
+            # save data to model
+            cursor = connection.cursor()
+            cursor.execute("INSERT INTO apps_user(username, password, gender, country, ethnicity, age) VALUES(%s, %s, %s, %s, %s, %s)", [username, password, gender, country, ethnicity, age])
+            transaction.commit()
+
+        return redirect("/")
     else:
         form = RegisterForm()
-        return render(request, 'signup_page.html', {'form':form})
 
+    return render(request, "signup_page.html", {"form":form})
 
-def user_login(request):
-    if request.POST:
-        username = request.POST.get('username', None)
-        password = request.POST.get('password', None)
-        # print(password)
-        try:
-            user = User.objects.get(username = username)
-        except:
-            return render(request, 'login_page.html')
-        if user.password == password:
-            return redirect('/')
-        else:
-            return HttpResponse('Wrong password!')
-    return render(request, 'login_page.html')

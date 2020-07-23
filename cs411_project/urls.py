@@ -17,12 +17,16 @@ from django.contrib import admin
 from django.urls import include, path
 from . import view
 from apps import views
-from apps.views import user_login, user_register
+from apps.views import user_register
 
 urlpatterns = [
     path('', view.main, name='index'),
-    path('login/', views.user_login, name='login'),
+    path('', include('django.contrib.auth.urls')),
     path('signup/', views.user_register, name='signup'),
     path('admin/', admin.site.urls),
     path('search/', views.search, name='search'),
+    path('restaurant_summary/', view.restaurant_summary, name='restaurant_summary'), 
+    path('cafe_summary/', view.cafe_summary, name='cafe_summary'), 
+    path('hotel_summary/', view.hotel_summary, name='hotel_summary'), 
+    path('nightbar_summary/', view.nightbar_summary, name='nightbar_summary'), 
 ]

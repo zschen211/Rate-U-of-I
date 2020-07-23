@@ -6,19 +6,22 @@
   <body>
 
     <!--Form-->
-    <form action='/' method="POST">
+    <form action='.' method="POST">
     {% csrf_token %}
-        <label for="username">Username</label><br>
+        <!-- <label for="username">Username</label><br>
         <input type="text" name="username" placeholder="Enter your name" required><br>
         <label for="password">Password</label><br>
-        <input type="password" name="password" placeholder="Enter your password" required><br>
+        <input type="password" name="password" placeholder="Enter your password" required><br> -->
+        <tr><th><label for="id_username">Username:</label></th><td><input type="text" name="username" maxlength="150" autofocus required id="id_username"><br><span class="helptext">Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</span></td></tr><br><br>
+        <tr><th><label for="id_password1">Password:</label></th><td><input type="password" name="password1" autocomplete="new-password" required id="id_password1"><br><span class="helptext"><ul><li>Your password can’t be too similar to your other personal information.</li><li>Your password must contain at least 8 characters.</li><li>Your password can’t be a commonly used password.</li><li>Your password can’t be entirely numeric.</li></ul></span></td></tr><br>
+        <tr><th><label for="id_password2">Password confirmation:</label></th><td><input type="password" name="password2" autocomplete="new-password" required id="id_password2"><br><span class="helptext">Enter the same password as before, for verification.</span></td></tr><br><br>
         <label for="age">Age</label><br>
-        <input type="text" name="age" placeholder="Enter Age" required><br>
+        <input type="text" name="age" placeholder="Enter Age" required><br><br>
         <label for="gender">Gender</label><br>
         <select name='gender' required>
           <option>Female</option>
           <option>Male</option>
-        </select><br>
+        </select><br><br>
         <label for="country">Country</label><br>
         <select name="country" required>
           <option value="AF">Afghanistan</option>
@@ -270,7 +273,7 @@
             <option value="YE">Yemen</option>
             <option value="ZM">Zambia</option>
             <option value="ZW">Zimbabwe</option>
-        </select><br>
+        </select><br><br>
         <label for="ethnicity">Ethnicity</label><br>
         <select name='ethnicity' required>
           <option>White</option>

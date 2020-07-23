@@ -13,7 +13,7 @@ class Place(models.Model):
 
 class User(models.Model):
     userID = models.AutoField(primary_key=True)
-    username = models.CharField(max_length=50)
+    username = models.CharField(max_length=150)
     password = models.CharField(max_length=50)
     gender = models.CharField(max_length=10)
     country = models.CharField(max_length=20)
