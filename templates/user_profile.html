@@ -2,10 +2,43 @@
 <html>
   <head lang="en">
   <title>User Profile</title>
+  <style>
+
+      a {
+        text-align: right;
+        display: block;
+        font-size: 20px;
+        margin-right: 60px;
+      }
+      .ProfileHeader {
+        width:auto;
+        height:100px;
+        padding: 1%;
+      }
+      .Head {
+        float:left;
+      }
+
+  </style>
   </head>
   <body>
 
-  <h1>User Profile</h1>
-
+  <a href="{% url 'login' %}">Log Out</a>
+  <a href="{% url 'signup' %}">Main</a>
+  <div class='ProfileHeader'>
+      <div class='Head'>
+          <img src="../static/img/userhead.png", alt="userhead", width = 100, height = 100>
+      </div>
+      <div class='texticon1'>
+      <br><br><br><br>
+      <p>User Name</p>
+      </div>
+  </div>
+  <hr>
+  <h3>Friends</h3>
+  <hr>
+  <h3>Favourite</h3>
+  <hr>
+  <h3>Reviews</h3>
   </body>
 </html>
