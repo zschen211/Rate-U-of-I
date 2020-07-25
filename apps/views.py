@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Place, User
+from .models import Place, User, Comment
 from .forms import RegisterForm
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth import authenticate, login
@@ -13,7 +13,7 @@ def search(request):
     if content:
         content = '%' + content + '%'
         place_list = Place.objects.raw(
-            "SELECT * FROM apps_place WHERE placeName LIKE %s OR types LIKE %s ORDER BY rating", [content, content]
+            "(SELECT * FROM apps_place WHERE placeName LIKE %s OR types LIKE %s ORDER BY rating DESC) UNION (SELECT * FROM apps_place WHERE description IS NOT NULL AND description<>'' AND description LIKE %s)", [content, content, content]
         )
         return render(request, 'results.html', {'place_list':place_list})
 
@@ -69,6 +69,36 @@ def edit_profile(request):
     return render(request, 'edit_info.html')
 
 
-def place_detail(request, **kwargs):
-    print(request)
-    return render(request, 'place_detailed.html')
+def place_detail(request, place_name):
+    place = Place.objects.raw(
+            "SELECT * FROM apps_place WHERE placeName=%s", [place_name]
+    )[0]
+    comment_list = User.objects.raw('SELECT * FROM apps_comment c JOIN apps_user u ON c.userID_id = u.userID WHERE c.placeID_id=%s', [place.placeID])
+
+    if request.POST:
+        if request.user.is_authenticated:
+            content = request.POST.get('comment_content')
+            deletion = request.POST.get('delete')
+            username = request.user.username
+            user_object = User.objects.raw('SELECT * FROM apps_user WHERE username=%s', [username])[0]
+            userID = user_object.userID
+
+            if deletion:
+                cursor = connection.cursor()
+                cursor.execute('DELETE FROM apps_comment WHERE userID_id=%s', [userID])
+                transaction.commit()
+
+            if content:
+                # add comment to database
+                cursor = connection.cursor()
+                cursor.execute('INSERT INTO apps_comment(userID_id, placeID_id, user_comment) VALUES(%s, %s, %s)', [userID, place.placeID, content])
+                transaction.commit()
+                # get context
+                comment_list = User.objects.raw('SELECT * FROM apps_comment c JOIN apps_user u ON c.userID_id = u.userID WHERE c.placeID_id=%s', [place.placeID])
+                return render(request, 'place_detailed.html', {'place':place, 'comment_list':comment_list})
+            else:
+                return render(request, 'place_detailed.html', {'place':place, 'comment_list':comment_list})
+        else:
+            return redirect("/login/")
+    else:
+        return render(request, 'place_detailed.html', {'place':place, 'comment_list':comment_list})

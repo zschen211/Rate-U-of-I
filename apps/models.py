@@ -10,7 +10,7 @@ class Place(models.Model):
     price_level = models.IntegerField(default=0)
     rating = models.FloatField(default=0)
     users_rating_num = models.IntegerField(default=0)
-    desription = models.CharField(max_length=400)
+    description = models.CharField(max_length=400)
     img_path = models.CharField(max_length=250)
 
 class User(models.Model):
