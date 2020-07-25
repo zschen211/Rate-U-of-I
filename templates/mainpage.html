@@ -3,13 +3,19 @@
   <head lang="en">
   <link rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@300&display=swap" rel="stylesheet">
 <style>
     h1 {
       font-size: 70px;
+      font-family: 'Cormorant SC', serif;
       text-align: center;
+      color:white;
     }
     h3 {
-        display: inline-block;
+        text-align: center;
+        font-family: 'Cormorant SC', serif;
+        font-size: 40px;
+        color:white;
     }
     img {
         display: block;
@@ -19,34 +25,101 @@
     a {
       text-align: right;
       display: block;
-      font-size: 30px;
+    }
+    .header {
+      margin-top: 0;
+      background: url("../static/img/a copy.jpg");
+      height: 100vh;
+      background-size: cover;
+
+    }
+    #sumLink {
+      text-align: center;
+      display: block;
+      font-family: 'Cormorant SC', serif;
+      font-variant: small-caps;
+      font-weight: bold;
+      font-size: 70px;
       margin-right: 60px;
     }
-    .type_header{
+    #sumLink:link {
+      color: #212121;
+      background-color: transparent;
+      text-decoration: none;
+    }
+
+    #sumLink:visited {
+      color: #212121;
+      background-color: transparent;
+      text-decoration: none;
+    }
+
+    #sumLink:hover {
+      color: #636262;
+      background-color: transparent;
+      text-decoration: none;
+    }
+
+    #sumLink:active {
+      color: #F9F8F8;
+      background-color: transparent;
+      text-decoration: none;
+    }
+    #search_thing {
+      box-sizing: border-box;
+      width: 600px;
+      height: 50px;
+      border: 4px solid #878787;
+      box-shadow: 0 6px 0 0 #878787;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 20px;
+    }
+
+    #search_btn {
+      box-sizing: border-box;
+      width: 50px;
+      height: 50px;
+      border: 4px solid #878787;
+      box-shadow: 0 6px 0 0 #878787;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 20px;
+    }
+
+    .type_header {
         display: flex;
         direction: row;
         justify-content: space-around;
     }
     .summary1 {
       width:auto;
-      height:260px;
+      height:320px;
       padding: 1%;
     }
     .imageicon1 {
       float:left;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
 
     .summary2 {
       width:auto;
-      height:260px;
+      height:320px;
       padding:1%;
     }
     .imageicon2 {
       float:right;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
     h4 {
       text-align: center;
       font-size: 40px;
+    }
+    .summary1 {
+      background-color: #DFDCDB;
+    }
+    .summary2 {
+      background-color: #F7F4F3;
     }
 
 </style>
@@ -54,31 +127,31 @@
   </head>
   <body>
 
-  <h1>Rate U of I</h1>
-  <p style="text-align:center;font-size:25px;">With Rate U of I, discover quality life.</p>
-  <hr>
-  {% if user.is_authenticated %}
+  <div class="header">
+    <br><br>
+    <h1>Rate UofI</h1>
+    <h3>With Rate U of I, discover quality life.</h3>
+
+    {% if user.is_authenticated %}
     <p>You've logged in!</p>
     <a href="{% url 'profile' %}" style="font-size: 16px">Your profile</a>
     <a href="{% url 'logout' %}" style="font-size: 16px">Log out</a>
-  {% else %}
+    {% else %}
     <a href="{% url 'login' %}" style="font-size: 16px">Log In</a>
     <a href="{% url 'signup' %}" style="font-size: 16px">Sign Up</a>
-  {% endif %}
-
-  <hr>
-
+    {% endif %}
+  </div>
   <!--search bar-->
   <div class="search_container">
     <form style="text-align:center;" action="/search/">
       {% csrf_token %}
       <label for="fname">Search:</label>
-      <input type="search" id="search_thing" name="search_content" placeholder="Search...">
-      <button type="submit"><i class="fa fa-search"></i></button>
+      <input type="search" id="search_thing" name="search_content" placeholder="Search..." >
+      <button type="submit" id="search_btn"><i class="fa fa-search" style="color:#878787"></i></button>
     </form>
-  </div>
+
   <!--Click the "Submit" button and the form-data will be sent to a page on the server called "action_page.php". -->
-  <hr>
+
         <p style="text-align: center; font-size: 20px;"><i><b>Insert recommendation below</b></i></p>
         <img src="../static/img/cat2.JPG" alt="sample_image", width = 260, height = 260>
         <p style="text-align: center;">和大佬达成共识.jpg</p>
@@ -87,55 +160,48 @@
   <hr>
   <div class='summary1'>
       <div class='imageicon1'>
-          <img src="../static/img/restaurant.png", alt="restaurant", width = 450, height = 260>
+          <img src="../static/img/b.jpg", alt="restaurant", width = 500px, height=320px;>
       </div>
       <div class='texticon1'>
-      <br><br><br><br>
+      <br><br><br><br><br>
       <!-- Restaurant should be a link, will fix later -->
-      <a href="{% url 'restaurant_summary' %}", style="text-align: center; font-size: 40px">Restaurant</a>
+      <a href="{% url 'restaurant_summary' %}" id="sumLink">Restaurant</a>
       </div>
   </div>
 
-  <hr>
 
   <div class='summary2'>
       <div class='imageicon2'>
-          <img src="../static/img/hotel.JPG", alt="hotel", width = 450, height = 260>
+          <img src="../static/img/c.JPG", alt="hotel", width = 500px, height=320px;>
       </div>
       <div class='texticon2'>
-      <br><br><br><br>
+      <br><br><br><br><br>
       <!-- Hotel should be a link, will fix later -->
-      <a href="{% url 'hotel_summary' %}", style="text-align: center; font-size: 40px">Hotel</a>
+      <a href="{% url 'hotel_summary' %}", id="sumLink">Hotel</a>
       </div>
   </div>
-
-  <hr>
 
   <div class='summary1'>
       <div class='imageicon1'>
-          <img src="../static/img/cafe.jpeg", alt="cafe", width = 450, height = 260>
+          <img src="../static/img/cafe.jpeg", alt="cafe", width = 500px, height=320px;>
       </div>
       <div class='texticon1'>
-      <br><br><br><br>
+      <br><br><br><br><br>
       <!-- Cafe should be a link, will fix later -->
-      <a href="{% url 'cafe_summary' %}", style="text-align: center; font-size: 40px">Cafe</a>
+      <a href="{% url 'cafe_summary' %}", id="sumLink">Cafe</a>
       </div>
   </div>
-
-  <hr>
 
   <div class='summary2'>
       <div class='imageicon2'>
-          <img src="../static/img/nightbar.jpeg", alt="bar", width = 450, height = 260>
+          <img src="../static/img/f.jpg", alt="bar", width = 500px, height=320px;>
       </div>
       <div class='texticon2'>
-      <br><br><br><br>
+      <br><br><br><br><br>
       <!-- Night Bar should be a link, will fix later -->
-      <a href="{% url 'nightbar_summary' %}", style="text-align: center; font-size: 40px">Night Bar</a>
+      <a href="{% url 'nightbar_summary' %}", id="sumLink">Night Life</a>
       </div>
   </div>
-
-  <hr>
 
   <footer>
     <p style="text-align:center;">About Us</p>
