@@ -20,11 +20,14 @@ from apps import views
 from apps.views import user_register
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
     path('', view.main, name='index'),
     path('', include('django.contrib.auth.urls')),
     path('signup/', views.user_register, name='signup'),
-    path('admin/', admin.site.urls),
     path('search/', views.search, name='search'),
+    path('profile/', views.user_profile, name='profile'),
+    path('edit/', views.edit_profile, name='edit'),
+    path('detail/', views.place_detail, name='detail'),
     path('restaurant_summary/', view.restaurant_summary, name='restaurant_summary'), 
     path('cafe_summary/', view.cafe_summary, name='cafe_summary'), 
     path('hotel_summary/', view.hotel_summary, name='hotel_summary'), 

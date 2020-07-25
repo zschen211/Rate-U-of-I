@@ -59,6 +59,7 @@
   <hr>
   {% if user.is_authenticated %}
     <p>You've logged in!</p>
+    <a href="{% url 'profile' %}" style="font-size: 16px">Your profile</a>
     <a href="{% url 'logout' %}" style="font-size: 16px">Log out</a>
   {% else %}
     <a href="{% url 'login' %}" style="font-size: 16px">Log In</a>
@@ -112,7 +113,7 @@
 
   <div class='summary1'>
       <div class='imageicon1'>
-          <img src="../static/img/cafe.jpg", alt="cafe", width = 450, height = 260>
+          <img src="../static/img/cafe.jpeg", alt="cafe", width = 450, height = 260>
       </div>
       <div class='texticon1'>
       <br><br><br><br>
@@ -125,7 +126,7 @@
 
   <div class='summary2'>
       <div class='imageicon2'>
-          <img src="../static/img/nightbar.jpg", alt="bar", width = 450, height = 260>
+          <img src="../static/img/nightbar.jpeg", alt="bar", width = 450, height = 260>
       </div>
       <div class='texticon2'>
       <br><br><br><br>

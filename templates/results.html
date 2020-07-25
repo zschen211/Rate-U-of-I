@@ -55,7 +55,8 @@
         {% for p in place_list %}
         <li>
           <div class=itembox>
-            <p style="font-size: 20"><b>{{ p.placeName }}</b></p>
+            <a href="{% url 'detail' %}" style="font-size: 20px;">{{ p.placeName }}</a>
+            <!-- <p style="font-size: 20"><b>{{ p.placeName }}</b></p> -->
             <p><b>Location:</b>{{p.vicinity}}</p>
             <p><b>Rating:</b>{{p.rating}}</p>
             <p><b>Price Level:</b>{{p.price_level}}</p>

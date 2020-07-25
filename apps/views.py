@@ -42,3 +42,33 @@ def user_register(request):
 
     return render(request, "signup_page.html", {"form":form})
 
+
+def user_profile(request):
+    username = request.user.username
+    user_info = User.objects.raw(
+        "SELECT * FROM apps_user WHERE username = %s", [username]
+    )
+    return render(request, "user_profile.html", {'user_info': user_info[0]})
+
+
+def edit_profile(request):
+    if request.POST:
+        username = request.user.username
+        age = request.POST.get('age', None)
+        gender = request.POST.get('gender', None)
+        country = request.POST.get('country', None)
+        ethnicity = request.POST.get('ethnicity', None)
+
+        # update model
+        cursor = connection.cursor()
+        cursor.execute(
+            "UPDATE apps_user SET age=%s, gender=%s, country=%s, ethnicity=%s WHERE username=%s", [age, gender, country, ethnicity, username])
+        transaction.commit()
+        return redirect('profile')
+
+    return render(request, 'edit_info.html')
+
+
+def place_detail(request, **kwargs):
+    print(request)
+    return render(request, 'place_detailed.html')

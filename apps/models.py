@@ -2,14 +2,16 @@ from django.db import models
 
 # Create your models here.
 class Place(models.Model):
+    placeID = models.AutoField(primary_key=True)
     placeName = models.CharField(max_length=200)
-    placeID = models.CharField(max_length=50, primary_key=True)
     business_status = models.CharField(max_length=50)
-    types = models.CharField(max_length=100)
+    types = models.CharField(max_length=200)
     vicinity = models.CharField(max_length=100)
     price_level = models.IntegerField(default=0)
     rating = models.FloatField(default=0)
     users_rating_num = models.IntegerField(default=0)
+    desription = models.CharField(max_length=400)
+    img_path = models.CharField(max_length=250)
 
 class User(models.Model):
     userID = models.AutoField(primary_key=True)
@@ -24,6 +26,19 @@ class Rating(models.Model):
     userID = models.ForeignKey('User', on_delete=models.CASCADE,related_name='+')
     placeID = models.ForeignKey('Place', on_delete=models.CASCADE, related_name='+')
     user_rating = models.FloatField(default=0)
+
+class Comment(models.Model):
+    userID = models.ForeignKey('User', on_delete=models.CASCADE,related_name='+')
+    placeID = models.ForeignKey('Place', on_delete=models.CASCADE, related_name='+')
+    user_comment = models.CharField(max_length=1000)
+
+class Friend(models.Model):
+    friend = models.ManyToManyField(User)
+
+class History(models.Model):
+    userID = models.ForeignKey('User', on_delete=models.CASCADE,related_name='+')
+    placeID = models.ForeignKey('Place', on_delete=models.CASCADE, related_name='+')
+    view_count = models.IntegerField(default=0)
 
 
 
