@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+  <title>User Profile</title>
+  <style>
+
+      .login {
+        text-align: right;
+        display: block;
+        font-size: 20px;
+        margin-right: 60px;
+      }
+      .ProfileHeader {
+        width:auto;
+        height:100px;
+        padding: 1%;
+      }
+      .Head {
+        float:left;
+      }
+
+      #buttonfriend {
+        display: inline-block;
+        /* vertical-align: top; */
+        width: 50px;
+        height: 50px;
+        padding: 0%;
+      }
+      #f {
+        display: block;
+        width: 50px;
+        height: 50px;
+        padding: 1%;
+      }
+
+      .content {
+        width: 90%;
+        margin: 30px auto 30px;
+        background: #D3D3D3;
+      }
+      .clearfix::after {
+        content: '';
+        display: block;
+        clear: both;
+      }
+      .btn{
+        padding: .5rem 1rem;
+        background: #006669;
+        color: white;
+        border: 1px solid transparent;
+        border-radius: .25rem;
+      }
+      .btn:hover{
+        color: white !important;
+        background: #006669;
+      }
+      .content .main-content{
+        width: 70%;
+        float: left;
+      }
+      .content .main-content .post{
+        width: 95%;
+        height: 270px;
+        margin: 20px auto;
+        border-radius: 5px;
+        background: white;
+        position: relative;
+      }
+      .content .main-content .post .read-more {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        border: 1px solid #006669;
+        background: transparent;
+        border-radius: 0px;
+        color: #006669 !important;
+      }
+      .content .main-content .post .read-more:hover{
+        background: #006669;
+        color: white !important;
+        transition: .25s;
+      }
+
+      .content .main-content .post .postimg{
+        width: 40%;
+        height: 100%;
+        float: left;
+      }
+
+      .content .main-content .post .post-preview{
+        width: 55%;
+        padding: 10px;
+        float: right;
+      }
+      .content .main-content .title{
+      margin: 20px;
+      }
+
+      .content .sidebar{
+        width: 25%;
+        float: right;
+        border: 1px dashed green;
+        height: 300px;
+      }
+      .title{
+        color: #444;
+      }
+  </style>
+  </head>
+  <body>
+
+  <a href="{% url 'login' %}" class = "login">Log Out</a>
+  <a href="{% url 'signup' %}" class = "login">Main</a>
+  <div class='ProfileHeader'>
+      <div class='Head'>
+          <img src="../static/img/userhead.png", alt="userhead", width = 100, height = 100>
+      </div>
+      <div class='texticon1'>
+      <br><br><br><br>
+      <p>User Name</p>
+      </div>
+  </div>
+  <hr>
+  <h1 class = "title">Friends</h1>
+  <button id="buttonfriend"><img id="f" src="../static/img/userhead.png">Friend Name</button>
+  <button id="buttonfriend"><img id="f" src="../static/img/userhead.png">Friend Name</button>
+  <button id="buttonfriend"><img id="f" src="../static/img/userhead.png">Friend Name</button>
+  <button id="buttonfriend"><img id="f" src="../static/img/userhead.png">Friend Name</button>
+  <button id="buttonfriend"><img id="f" src="../static/img/userhead.png">Friend Name</button>
+  <button id="buttonfriend"><img id="f" src="../static/img/userhead.png">Friend Name</button>
+  <button id="buttonfriend"><img id="f" src="../static/img/userhead.png">Friend Name</button>
+  <hr>
+  <h1 class = "title">Favourite</h1>
+  <div style="text-align:center">
+    <button type="button">place1</button>
+    <button type="button">place2</button>
+    <button type="button">place3</button>
+    <button type="button">place4</button>
+  </div>
+  <hr>
+
+  <div class = "my-post">
+      <h1 class = "title">Reviews</h1>
+      <ul>
+        {% if place_list %}
+          {% for p in place_list %}
+          <li>
+            <div class=itembox>
+              <img src="../static/img/picture.JPG", alt="picture", width = 300, height = 200>
+              <p class="like">&#10084;</p>
+              <a href="{% detailed page link %}" style="font-size: 20px;">{{ c.comments }}</a>
+              <p><b>Place:</b>{{c.placeName}}</p>
+              <p><b>Rating:</b>{{p.rating}}</p>
+              <p><b>Comments:</b>{{c.comments}}</p>
+              <a herf="single.html1">Read More</a>
+            </div>
+          </li>
+          {% endfor %}
+        {% else %}
+        {% endif %}
+      </ul>
+  </div>
+
+  <!-- content -->
+<div class = "content clearfix">
+  <!-- main content -->
+  <div class = "main-content">
+      <h1 class = "title">Reviews</h1>
+
+      <div class = "post">
+        <img src="../static/img/picture.JPG", alt="picture", width = 300, height = 200 class = "postimg">
+        <div class = "post-preview">
+          <h2><a herf="single.html1">Love Cat</a></h2>
+          <i class="far fa-user">User A</i>
+          &nbsp;
+          <i class="far calender">July 24, 2020</i>
+          <p class = "preview-text">
+            love this cutie; love this cutie; love this cutie; love this cutie;
+          </p>
+          <a herf="single.html1" class = "btn read-more">Read More</a>
+        </div>
+      </div>
+      <div class = "post">
+        <img src="../static/img/picture.JPG", alt="picture", width = 300, height = 200 class = "postimg">
+        <div class = "post-preview">
+          <h2><a herf="single.html1">Love Cat</a></h2>
+          <i class="far fa-user">User A</i>
+          &nbsp;
+          <i class="far calender">July 24, 2020</i>
+          <p class = "preview-text">
+            love this cutie; love this cutie; love this cutie; love this cutie;
+          </p>
+          <a herf="single.html1" class = "btn read-more">Read More</a>
+        </div>
+      </div>
+      <div class = "post">
+        <img src="../static/img/picture.JPG", alt="picture", width = 300, height = 200 class = "postimg">
+        <div class = "post-preview">
+          <h2><a herf="single.html1">Love Cat</a></h2>
+          <i class="far fa-user">User A</i>
+          &nbsp;
+          <i class="far calender">July 24, 2020</i>
+          <p class = "preview-text">
+            love this cutie; love this cutie; love this cutie; love this cutie;
+          </p>
+          <a herf="single.html1" class = "btn read-more">Read More</a>
+        </div>
+      </div>
+  </div>
+  <!-- /main content -->
+
+
+
+
+
+
+  <div class = "sidebar"></div>
+
+</div>
+<!-- /content -->
+
+  </body>
+</html>
