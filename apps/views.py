@@ -5,6 +5,9 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect,HttpResponse
 from django.db import connection, transaction
+import os
+from PIL import Image
+
 
 
 # Create your views here.
@@ -70,11 +73,18 @@ def edit_profile(request):
     return render(request, 'edit_info.html')
 
 
+def get_img(path):
+    img_list = os.listdir(path)
+    return img_list
+
+
 def place_detail(request, place_name):
     place = Place.objects.raw(
             "SELECT * FROM apps_place WHERE placeName=%s", [place_name]
     )[0]
     comment_list = User.objects.raw('SELECT * FROM apps_comment c JOIN apps_user u ON c.userID_id = u.userID WHERE c.placeID_id=%s', [place.placeID])
+    img_list = get_img(place.img_path)
+    thumbnail = place.img_path[7:] + '/' + img_list[3]
 
     if request.POST:
         if request.user.is_authenticated:
@@ -96,13 +106,13 @@ def place_detail(request, place_name):
                 transaction.commit()
                 # get context
                 comment_list = User.objects.raw('SELECT * FROM apps_comment c JOIN apps_user u ON c.userID_id = u.userID WHERE c.placeID_id=%s', [place.placeID])
-                return render(request, 'place_detailed.html', {'place':place, 'comment_list':comment_list})
+                return render(request, 'place_detailed.html', {'place':place, 'comment_list':comment_list, 'img':thumbnail})
             else:
-                return render(request, 'place_detailed.html', {'place':place, 'comment_list':comment_list})
+                return render(request, 'place_detailed.html', {'place':place, 'comment_list':comment_list, 'img':thumbnail})
         else:
             return redirect("/login/")
     else:
-        return render(request, 'place_detailed.html', {'place':place, 'comment_list':comment_list})
+        return render(request, 'place_detailed.html', {'place':place, 'comment_list':comment_list, 'img':thumbnail})
 
 
 def add_friend(request):

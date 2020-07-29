@@ -160,6 +160,8 @@ body {
     <div style="padding-left: 25px;">
       <hr>
       <h2>{{ place.placeName}}</h2><br><br>
+      {% load static %}
+      <img src="{% static img %}" alt="Thumbnail" width="300" height="200"><br><br>
       <p><b>Average Rating: </b>{{place.rating}}</p>
       <p><b>Location: </b>{{place.vicinity}}</p>
       <p><b>Price Level: </b>{{place.price_level}}</p>
