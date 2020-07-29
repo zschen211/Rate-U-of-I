@@ -138,11 +138,12 @@ body {
     
     <div class="topnav">
       <a class="active" href="{% url 'index' %}">Home</a>
-      <a href="recent">Recent</a>
-      <a href="#contact">Contact</a>
+      <!-- <a href="recent">Recent</a>
+      <a href="#contact">Contact</a> -->
       <div class="search-container">
-        <form action="/action_page.php">
-          <input type="text" placeholder="Search place.." name="search">
+        <form action='/search/'>
+          {% csrf_token %}
+          <input type="text" placeholder="Search place.." name="search_content" id="search_thing">
           <button type="submit"><i class="fa fa-search"></i></button>
         </form>
       </div>

@@ -22,6 +22,14 @@
       </div>
     </div> 
 
+    <div class="search-container">
+      <form action='/search/'>
+        {% csrf_token %}
+        <input type="text" placeholder="Search place.." name="search_content" id="search_thing">
+        <button type="submit"><i class="fa fa-search"></i></button>
+      </form>
+    </div>
+
     <!-- <div class="dropdown">
       <button class="dropbtn">Type
         <i class="fa fa-caret-down"></i>
