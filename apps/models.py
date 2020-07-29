@@ -33,7 +33,20 @@ class Comment(models.Model):
     user_comment = models.CharField(max_length=1000)
 
 class Friend(models.Model):
-    friend = models.ManyToManyField(User)
+    users = models.ManyToManyField('User')
+    current_user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='owner', null=True)
+    @classmethod
+    def make_friends(cls, current_user, added_friend):
+        friend, created = cls.objects.get_or_create(
+            current_user=current_user
+        )
+        friend.users.add(added_friend)
+    @classmethod
+    def remove_friends(cls, current_user, added_friend):
+        friend, created = cls.objects.get_or_create(
+            current_user=current_user
+        )
+        friend.users.remove(added_friend)
 
 class History(models.Model):
     userID = models.ForeignKey('User', on_delete=models.CASCADE,related_name='+')

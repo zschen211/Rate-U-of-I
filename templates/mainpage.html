@@ -14,7 +14,8 @@
 
     <ul class="userops">
     {% if user.is_authenticated %}
-      <p>You've logged in!</p>
+      <li><a id="uops" href="{% url 'add_friend' %}" style="font-size: 16px">Add Friend</a></li>
+      <li><a id="uops" href="{% url 'profile' %}" style="font-size: 16px">Profile</a></li>
       <li><a id="uops" href="{% url 'logout' %}" style="font-size: 16px">Log out</a></li>
     {% else %}
       <li><a id="uops" href="{% url 'login' %}" style="font-size: 16px">Log In</a></li>
@@ -43,9 +44,7 @@
         <p style="text-align: center; font-size: 20px;"><i><b>Insert recommendation below</b></i></p>
         <img src="../static/img/cat2.JPG" alt="sample_image", width = 260, height = 260>
         <p style="text-align: center;">和大佬达成共识.jpg</p>
-  <hr>
   <h3>Recent Posts</h3>
-  <hr>
   <div class='summary1'>
       <div class='imageicon1'>
           <img src="../static/img/restaurant.jpg", alt="restaurant", width = 500px, height=320px;>

@@ -28,6 +28,7 @@ urlpatterns = [
     path('profile/', views.user_profile, name='profile'),
     path('edit/', views.edit_profile, name='edit'),
     path('detail/<str:place_name>/', views.place_detail, name='detail'),
+    path('add_friend/', views.add_friend, name='add_friend'),
     path('restaurant_summary/', view.restaurant_summary, name='restaurant_summary'), 
     path('cafe_summary/', view.cafe_summary, name='cafe_summary'), 
     path('hotel_summary/', view.hotel_summary, name='hotel_summary'), 

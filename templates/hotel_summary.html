@@ -31,8 +31,10 @@
     <p style="font-size:160%;">Want to make your stay more enjoyable? We’ve got you covered:</p>
     <p style="font-size:120%;">Which of the following do you care about most?</p>
     <div style="text-align:center">
-      <button type="button">Price</button>
-      <button type="button">Rating</button>
+      <form method='POST' action='.'>
+        {% csrf_token %}
+        <input type="submit" value='Get started!'>
+      </form>
     </div>
   </body>
 </html>

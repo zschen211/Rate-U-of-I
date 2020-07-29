@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Place, User, Comment
+from .models import Place, User, Comment, Friend
 from .forms import RegisterForm
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth import authenticate, login
@@ -13,7 +13,7 @@ def search(request):
     if content:
         content = '%' + content + '%'
         place_list = Place.objects.raw(
-            "(SELECT * FROM apps_place WHERE placeName LIKE %s OR types LIKE %s ORDER BY rating DESC) UNION (SELECT * FROM apps_place WHERE description IS NOT NULL AND description<>'' AND description LIKE %s)", [content, content, content]
+            "(SELECT * FROM apps_place WHERE placeName LIKE %s OR types LIKE %s ORDER BY rating DESC) UNION (SELECT * FROM apps_place WHERE description IS NOT NULL AND description<>'' AND description LIKE %s ORDER BY rating DESC)", [content, content, content]
         )
         return render(request, 'results.html', {'place_list':place_list})
 
@@ -62,7 +62,8 @@ def edit_profile(request):
         # update model
         cursor = connection.cursor()
         cursor.execute(
-            "UPDATE apps_user SET age=%s, gender=%s, country=%s, ethnicity=%s WHERE username=%s", [age, gender, country, ethnicity, username])
+            "UPDATE apps_user SET age=%s, gender=%s, country=%s, ethnicity=%s WHERE username=%s", [age, gender, country, ethnicity, username]
+        )
         transaction.commit()
         return redirect('profile')
 
@@ -102,3 +103,18 @@ def place_detail(request, place_name):
             return redirect("/login/")
     else:
         return render(request, 'place_detailed.html', {'place':place, 'comment_list':comment_list})
+
+
+def add_friend(request):
+    if request.POST:
+        username = request.POST.get('username')
+        current_username = request.user.username
+        try:
+            added_user = User.objects.raw('SELECT * FROM apps_user WHERE username=%s', [username])[0]
+            current_user = User.objects.raw('SELECT * FROM apps_user WHERE username=%s', [current_username])[0]
+            Friend.make_friends(current_user, added_user)
+            # print(Friend.objects.get(current_user=current_user).users.all())
+            return HttpResponse('Added successfully!')
+        except:
+            return HttpResponse('Username does not exist!')
+    return render(request, 'add_friend.html')
