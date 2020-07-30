@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect,HttpResponse
 from django.db import connection, transaction
 import os
+import shutil
 from PIL import Image
 
 
@@ -50,8 +51,17 @@ def user_profile(request):
     username = request.user.username
     user_info = User.objects.raw(
         "SELECT * FROM apps_user WHERE username = %s", [username]
-    )
-    return render(request, "user_profile.html", {'user_info': user_info[0]})
+    )[0]
+    current_user = User.objects.raw('SELECT * FROM apps_user WHERE username=%s', [request.user.username])[0]
+    friend_list = Friend.objects.get(current_user=current_user).users.all()
+    image_path = 'static/img/avatar/' + user_info.username + '/'
+    files = os.listdir(image_path)
+    try:
+        profile_image = files[0]
+        profile_image = image_path + profile_image
+        return render(request, "user_profile.html", {'user_info': user_info, 'profile_image': profile_image[7:]})
+    except:
+        return render(request, "user_profile.html", {'user_info': user_info, 'profile_image': None})
 
 
 def edit_profile(request):
@@ -61,13 +71,24 @@ def edit_profile(request):
         gender = request.POST.get('gender', None)
         country = request.POST.get('country', None)
         ethnicity = request.POST.get('ethnicity', None)
+        avatar = request.FILES.get('avatar', None)
+        biography = request.POST.get('biography', None)
 
         # update model
         cursor = connection.cursor()
         cursor.execute(
-            "UPDATE apps_user SET age=%s, gender=%s, country=%s, ethnicity=%s WHERE username=%s", [age, gender, country, ethnicity, username]
+            "UPDATE apps_user SET age=%s, gender=%s, country=%s, ethnicity=%s, biography=%s WHERE username=%s", [age, gender, country, ethnicity, biography, username]
         )
         transaction.commit()
+
+        # update avatar
+        if os.path.isdir('static/img/avatar/'+username):
+            shutil.rmtree('static/img/avatar/'+username)
+        os.mkdir('static/img/avatar/'+username)
+        with open('static/img/avatar/' + username +'/'+ str(avatar), 'wb') as f:
+            for line in avatar:
+                f.write(line)
+        
         return redirect('profile')
 
     return render(request, 'edit_info.html')
@@ -93,6 +114,13 @@ def place_detail(request, place_name):
             username = request.user.username
             user_object = User.objects.raw('SELECT * FROM apps_user WHERE username=%s', [username])[0]
             userID = user_object.userID
+            existed_comment = Comment.objects.raw('SELECT * FROM apps_comment WHERE userID_id=%s AND placeID_id=%s', [userID, place.placeID])
+            flag = 0
+            try:
+                temp = existed_comment[0]
+                flag = 1
+            except:
+                flag = 0
 
             if deletion:
                 cursor = connection.cursor()
@@ -100,10 +128,13 @@ def place_detail(request, place_name):
                 transaction.commit()
 
             if content:
-                # add comment to database
-                cursor = connection.cursor()
-                cursor.execute('INSERT INTO apps_comment(userID_id, placeID_id, user_comment) VALUES(%s, %s, %s)', [userID, place.placeID, content])
-                transaction.commit()
+                if not flag:
+                    # add comment to database
+                    cursor = connection.cursor()
+                    cursor.execute('INSERT INTO apps_comment(userID_id, placeID_id, user_comment) VALUES(%s, %s, %s)', [userID, place.placeID, content])
+                    transaction.commit()
+                else:
+                    return HttpResponse('Only one comment is allowed for each place!')
                 # get context
                 comment_list = User.objects.raw('SELECT * FROM apps_comment c JOIN apps_user u ON c.userID_id = u.userID WHERE c.placeID_id=%s', [place.placeID])
                 return render(request, 'place_detailed.html', {'place':place, 'comment_list':comment_list, 'img':thumbnail})

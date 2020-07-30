@@ -55,8 +55,15 @@
     </div>  -->
   </div>
 
-
   <body>
+    {% if user.is_authenticated %}
+      <p>You've logged in!</p>
+      <a href="{% url 'logout' %}" style="font-size: 16px; text-align: right;">Log out</a>
+    {% else %}
+      <a href="{% url 'login' %}" style="font-size: 16px; text-align: right;">Log In</a>
+      <a href="{% url 'signup' %}" style="font-size: 16px; text-align: right;">Sign Up</a>
+    {% endif %}
+    
     <ul>
 
       {% if place_list %}

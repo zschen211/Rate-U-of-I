@@ -6,8 +6,9 @@
   <body>
     <h2>Edit Profile</h2>
 
-    <form class='editProfile' action='.' method="POST">
+    <form class='editProfile' action='.' method="POST" enctype="multipart/form-data">
       {% csrf_token %}
+      <input type='file' name='avatar'><br><br>
       <label for="age">Age</label><br>
       <input type="text" name="age" placeholder="Enter Age" required><br><br>
       <label for="gender">Gender</label><br>
@@ -275,8 +276,8 @@
           <option>Alaska Native</option>
           <option>Native Hawiian</option>
         </select><br><br>
-        <!-- <label for="biography">Biography</label><br>
-        <textarea id="biography" name="bio"  placeholder="What's on your mind?"></textarea><br><br> -->
+        <label for="biography">Biography</label><br>
+        <input type="text" name="biography" placeholder="Enter biography">
         <button type='submit'>Submit</button>
     </form>
   </body>

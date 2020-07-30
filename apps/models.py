@@ -21,6 +21,7 @@ class User(models.Model):
     country = models.CharField(max_length=20)
     ethnicity = models.CharField(max_length=20)
     age = models.IntegerField()
+    biography = models.CharField(max_length=400, null=True)
 
 class Rating(models.Model):
     userID = models.ForeignKey('User', on_delete=models.CASCADE,related_name='+')
