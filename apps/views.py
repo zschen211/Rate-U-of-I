@@ -52,8 +52,9 @@ def user_profile(request):
     user_info = User.objects.raw(
         "SELECT * FROM apps_user WHERE username = %s", [username]
     )[0]
-    current_user = User.objects.raw('SELECT * FROM apps_user WHERE username=%s', [request.user.username])[0]
-    friend_list = Friend.objects.get(current_user=current_user).users.all()
+    # current_user = User.objects.raw('SELECT * FROM apps_user WHERE username=%s', [request.user.username])[0]
+    # friend_list = Friend.objects.get(current_user=current_user).users.all()
+    # print(friend_list)
     image_path = 'static/img/avatar/' + user_info.username + '/'
     files = os.listdir(image_path)
     try:
