@@ -8,174 +8,65 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <style>
-    a {
-      display: block;
-      font-size: 30px;
-      margin-right: 60px;
-    }
-    /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
-    .row.content {height: 1500px}
-    
-    /* Set gray background color and 100% height */
-    .sidenav {
-      background-color: #f1f1f1;
-      height: 100%;
-    }
-    
-    /* Set black background color, white text and some padding */
-    footer {
-      background-color: #333;
-      color: white;
-      padding: 15px;
-    }
-    
-    /* On small screens, set height to 'auto' for sidenav and grid */
-    @media screen and (max-width: 767px) {
-      .sidenav {
-        height: auto;
-        padding: 15px;
-      }
-      .row.content {height: auto;} 
-    }
-
-    * {box-sizing: border-box;}
-
-body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-.topnav {
-  overflow: hidden;
-  background-color: #333;
-}
-
-.topnav a {
-  float: left;
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
-}
-
-.topnav a:hover {
-  background-color: #ddd;
-  color: black;
-}
-
-.topnav a.active {
-  background-color: #333;
-  color: white;
-}
-
-.topnav .search-container {
-  float: right;
-}
-
-.topnav input[type=text] {
-  padding: 6px;
-  margin-top: 8px;
-  font-size: 17px;
-  border: none;
-}
-
-.topnav .search-container button {
-  float: right;
-  padding: 6px 10px;
-  margin-top: 8px;
-  margin-right: 16px;
-  background: #ddd;
-  font-size: 17px;
-  border: none;
-  cursor: pointer;
-}
-
-.topnav .search-container button:hover {
-  background: #ccc;
-}
-
-@media screen and (max-width: 600px) {
-  .topnav .search-container {
-    float: none;
-  }
-  .topnav a, .topnav input[type=text], .topnav .search-container button {
-    float: none;
-    display: block;
-    text-align: left;
-    width: 100%;
-    margin: 0;
-    padding: 14px;
-  }
-  .topnav input[type=text] {
-    border: 1px solid grey;  
-  }
-}
-  </style>
+  <link link rel="stylesheet" href="/static/css/detailed.css">
+  <style></style>
 </head>
 <body>
 
-<!--div class="container-fluid">
-  <div class="row content">
-    <div class="col-sm-3 sidenav">
-      <ul class="nav nav-pills nav-stacked">
-        <br><li class="active"><a href="#main page link">Home Page</a></li>
-        <li><a href="#">Recent</a></li>
-        <li><a href="#section3">Family</a></li>
-        <li><a href="#section3">Photos</a></li>
-      </ul><br>
-      <div class="input-group">
-        <input type="text" class="form-control" placeholder="Search Place..">
-        <span class="input-group-btn">
-          <button class="btn btn-default" type="button">
-            <span class="glyphicon glyphicon-search"></span>
-          </button>
-        </span>
-      </div>
-    </div-->
     
-    <div class="topnav">
-      <a class="active" href="{% url 'index' %}">Home</a>
-      <!-- <a href="recent">Recent</a>
-      <a href="#contact">Contact</a> -->
-      <div class="search-container">
-        <form action='/search/'>
-          {% csrf_token %}
-          <input type="text" placeholder="Search place.." name="search_content" id="search_thing">
-          <button type="submit"><i class="fa fa-search"></i></button>
-        </form>
-      </div>
+    <div class = "header1">
+          <a href="{% url 'index' %}">HOME</a>
+          <a><input type="search" placeholder="Search"></a>
+
+          <div class="userops">
+            {% if user.is_authenticated %}
+              <li><a id="uops" href="{% url 'add_friend' %}" style="font-size: 14px">Add Friend</a></li>
+              <li><a id="uops" href="{% url 'profile' %}" style="font-size: 14px">Profile</a></li>
+              <li><a id="uops" href="{% url 'logout' %}" style="font-size: 14px">Log out</a></li>
+            {% else %}
+              <li><a id="uops" href="{% url 'login' %}" style="font-size: 14px">Log In</a></li>
+              <li><a id="uops" href="{% url 'signup' %}" style="font-size: 14px">Sign Up</a></li>
+            {% endif %}
+          </div>
+    </div> 
+
+      <br><br><br>
+
+      <div style="display:inline-block;">
+        {% load static %}
+          <img src="{% static img %}" alt="Thumbnail" width=500px height=350px><br><br>
+          <!-- <img src="../static/img/dog.jpg" alt="Thumbnail" width=500px height=350px><br><br> -->
+      </div>  
+      <div class = "imageAlign">
+        <h2 style="text-align: center;">{{place.placeName}}</h2><br><br>
+        <p style="text-align: center;"><b>Average Rating: </b>{{place.rating}}</p>
+        <p style="text-align: center;"><b>Location: </b>{{place.vicinity}}</p>
+        <p style="text-align: center;"><b>Price Level: </b>{{place.price_level}}</p>
+        <p style="text-align: center;"><b>Status: </b>{{place.business_status}}</p>
     </div>
-    
-    
-    {% if user.is_authenticated %}
-      <p>You've logged in!</p>
-      <a href="{% url 'logout' %}" style="font-size: 16px; text-align: right;">Log out</a>
-    {% else %}
-      <a href="{% url 'login' %}" style="font-size: 16px; text-align: right;">Log In</a>
-      <a href="{% url 'signup' %}" style="font-size: 16px; text-align: right;">Sign Up</a>
-    {% endif %}
+      
+    <hr>
 
-    <div style="padding-left: 25px;">
-      <hr>
-      <h2>{{ place.placeName}}</h2><br><br>
-      {% load static %}
-      <img src="{% static img %}" alt="Thumbnail" width="300" height="200"><br><br>
-      <p><b>Average Rating: </b>{{place.rating}}</p>
-      <p><b>Location: </b>{{place.vicinity}}</p>
-      <p><b>Price Level: </b>{{place.price_level}}</p>
-      <p><b>Status: </b>{{place.business_status}}</p>
-      <br><hr>
-
-      <h4>Leave a Comment:</h4>
+    <div style="padding-left: 25px; padding-right: 25px;">
+      <form action="." method="POST">
+        {% csrf_token %}
+        <label for="rate">Rate this place:</label><br>
+          <select name='rate' required>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select><br><br>
+          <button type="submit" class="button">Submit</button>
+      </form><br>
+      <h4 style="font-family: Lucida Console;"><b>Leave a Comment:</b></h4><br>
       <form role="form" action='.' method="POST">
       {% csrf_token %}
         <div class="form-group">
-          <textarea class="form-control" rows="3" name='comment_content' required></textarea>
+          <textarea class="form-control" rows="4" name='comment_content' required></textarea>
         </div>
-        <button type="submit" class="btn btn-success">Submit</button>
+        <button type="submit" class="button">Submit</button>
       </form>
       <br><br>
       

@@ -26,12 +26,12 @@ class User(models.Model):
 class Rating(models.Model):
     userID = models.ForeignKey('User', on_delete=models.CASCADE,related_name='+')
     placeID = models.ForeignKey('Place', on_delete=models.CASCADE, related_name='+')
-    user_rating = models.FloatField(default=0)
+    user_rating = models.FloatField(default=0, null=True)
 
 class Comment(models.Model):
     userID = models.ForeignKey('User', on_delete=models.CASCADE,related_name='+')
     placeID = models.ForeignKey('Place', on_delete=models.CASCADE, related_name='+')
-    user_comment = models.CharField(max_length=1000)
+    user_comment = models.CharField(max_length=1000, null=True)
 
 class Friend(models.Model):
     users = models.ManyToManyField('User')

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Place, User, Comment, Friend
+from .models import Place, User, Comment, Friend, Rating, History
 from .forms import RegisterForm
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth import authenticate, login
@@ -7,6 +7,9 @@ from django.http import HttpResponseRedirect,HttpResponse
 from django.db import connection, transaction
 import os
 import shutil
+import math
+import numpy as np
+from textblob import TextBlob
 from PIL import Image
 
 
@@ -40,6 +43,11 @@ def user_register(request):
             cursor.execute("INSERT INTO apps_user(username, password, gender, country, ethnicity, age) VALUES(%s, %s, %s, %s, %s, %s)", [username, password, gender, country, ethnicity, age])
             transaction.commit()
 
+            # automatically login in
+            user = authenticate(request, username=username, password=password)
+            if user != None:
+                login(request, user)
+
         return redirect("/")
     else:
         form = RegisterForm()
@@ -48,21 +56,23 @@ def user_register(request):
 
 
 def user_profile(request):
+    implicit_rating()
     username = request.user.username
     user_info = User.objects.raw(
         "SELECT * FROM apps_user WHERE username = %s", [username]
     )[0]
-    # current_user = User.objects.raw('SELECT * FROM apps_user WHERE username=%s', [request.user.username])[0]
-    # friend_list = Friend.objects.get(current_user=current_user).users.all()
-    # print(friend_list)
+    # get friend list
+    current_user = User.objects.raw('SELECT * FROM apps_user WHERE username=%s', [username])[0]
+    friends = Friend.objects.get(current_user=current_user).users.all()
+    # get profile image
     image_path = 'static/img/avatar/' + user_info.username + '/'
-    files = os.listdir(image_path)
     try:
+        files = os.listdir(image_path)
         profile_image = files[0]
         profile_image = image_path + profile_image
-        return render(request, "user_profile.html", {'user_info': user_info, 'profile_image': profile_image[7:]})
+        return render(request, "user_profile.html", {'user_info': user_info, 'profile_image': profile_image[7:], 'friends':friends})
     except:
-        return render(request, "user_profile.html", {'user_info': user_info, 'profile_image': None})
+        return render(request, "user_profile.html", {'user_info': user_info, 'profile_image': None, 'friends':friends})
 
 
 def edit_profile(request):
@@ -107,29 +117,59 @@ def place_detail(request, place_name):
     comment_list = User.objects.raw('SELECT * FROM apps_comment c JOIN apps_user u ON c.userID_id = u.userID WHERE c.placeID_id=%s', [place.placeID])
     img_list = get_img(place.img_path)
     thumbnail = place.img_path[7:] + '/' + img_list[3]
+    # thumbnail = None
+    username = request.user.username
+    user_object = User.objects.raw('SELECT * FROM apps_user WHERE username=%s', [username])[0]
+    userID = user_object.userID
+
+    # update view history
+    cursor = connection.cursor()
+    try: 
+        history = History.objects.raw('SELECT * FROM apps_history WHERE userID_id=%s AND placeID_id=%s', [userID, place.placeID])[0]
+        cursor.execute('UPDATE apps_history SET view_count=view_count+1 WHERE userID_id=%s AND placeID_id=%s', [userID, place.placeID])
+    except:
+        cursor.execute('INSERT INTO apps_history(userID_id, placeID_id, view_count) VALUES(%s, %s, %s)', [userID, place.placeID, 1])
+    transaction.commit()
 
     if request.POST:
         if request.user.is_authenticated:
             content = request.POST.get('comment_content')
             deletion = request.POST.get('delete')
-            username = request.user.username
-            user_object = User.objects.raw('SELECT * FROM apps_user WHERE username=%s', [username])[0]
-            userID = user_object.userID
-            existed_comment = Comment.objects.raw('SELECT * FROM apps_comment WHERE userID_id=%s AND placeID_id=%s', [userID, place.placeID])
-            flag = 0
-            try:
-                temp = existed_comment[0]
-                flag = 1
-            except:
-                flag = 0
+            rate = request.POST.get('rate')
 
-            if deletion:
+            # user rating
+            existed_rating = Rating.objects.raw('SELECT * FROM apps_rating WHERE userID_id=%s AND placeID_id=%s', [userID, place.placeID])
+            flag1 = 0
+            try:
+                temp = existed_rating[0]
+                flag1 = 1
+            except:
+                flag1 = 0
+            if rate:
+                # add or modify rating
                 cursor = connection.cursor()
-                cursor.execute('DELETE FROM apps_comment WHERE userID_id=%s', [userID])
+                if not flag1:
+                    cursor.execute('INSERT INTO apps_rating(userID_id, placeID_id, user_rating) VALUES(%s, %s, %s)', [userID, place.placeID, rate])
+                else:
+                    cursor.execute('UPDATE apps_rating SET user_rating=%s WHERE userID_id=%s AND placeID_id=%s', [rate, userID, place.placeID])
                 transaction.commit()
 
+            # comment deletion
+            if deletion:
+                cursor = connection.cursor()
+                cursor.execute('DELETE FROM apps_comment WHERE userID_id=%s AND placeID_id=%s', [userID, place.placeID])
+                transaction.commit()
+
+            # comment functionality
+            existed_comment = Comment.objects.raw('SELECT * FROM apps_comment WHERE userID_id=%s AND placeID_id=%s', [userID, place.placeID])
+            flag2 = 0
+            try:
+                temp = existed_comment[0]
+                flag2 = 1
+            except:
+                flag2 = 0
             if content:
-                if not flag:
+                if not flag2:
                     # add comment to database
                     cursor = connection.cursor()
                     cursor.execute('INSERT INTO apps_comment(userID_id, placeID_id, user_comment) VALUES(%s, %s, %s)', [userID, place.placeID, content])
@@ -160,3 +200,50 @@ def add_friend(request):
         except:
             return HttpResponse('Username does not exist!')
     return render(request, 'add_friend.html')
+
+
+def implicit_rating():
+    ratings = Rating.objects.raw('SELECT * FROM apps_rating')
+    comments = Comment.objects.raw('SELECT * FROM apps_comment')
+    views = History.objects.raw('SELECT * FROM apps_history')
+    item_count = Place.objects.count()
+    user_max_id = User.objects.raw('SELECT * FROM apps_user')[-1].userID
+
+    # generate matrix
+    matrix = [[0 for j in range(user_max_id)] for i in range(item_count)]
+    for v in views:
+        i = v.placeID_id
+        j = v.userID_id-1
+        matrix[i][j] += v.view_count
+
+    for r in ratings:
+        i = r.placeID_id
+        j = r.userID_id
+        rate = r.user_rating
+        if rate == 3:
+            matrix[i][j] += 10
+        if rate == 4:
+            matrix[i][j] += 20
+        if rate == 5:
+            matrix[i][j] += 30
+
+    for c in comments:
+        i = c.placeID_id
+        j = c.userID_id
+        blob = TextBlob(c.user_comment)
+        if blob.sentiment.polarity > 0:
+            matrix[i][j] += 50*blob.sentiment.polarity
+
+    return matrix
+
+
+def average_inter_cluster_distance(c1, c2):
+    denominator = 0
+    N1 = len(c1)
+    N2 = len(c2)
+    for m in range(N1):
+        for n in range(N2):
+            d = np.array(c1[m]) - np.array(c2[n])
+            denominator += np.inner(d,d)
+
+    return np.sqrt(denominator/(N1*N2))

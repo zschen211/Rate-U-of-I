@@ -84,18 +84,19 @@
         padding: 10px 0px 10px 0px;
       }
       .post-slider .post-wrapper .post {
-        width: 300px;
+        width: 200px;
         height: 280px;
         margin: 0px 10px;
         display: inline-block;
-        background: white;
         border-radius: 5px;
       }
       .post-slider .post-wrapper .post .slider-image{
-        width: 100%;
-        height: 200px;
-        border-top-left-radius: 5px;
-        border-top-right-radius: 5px;
+        width: 250px;
+        height: 250px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        border-radius: 120px;
       }
       .post-slider .post-wrapper .post .post-info {
         text-align: center;
@@ -249,6 +250,7 @@
   </head>
   <body>
 
+    <a href="{% url 'add_friend' %}" class="link">Add Friend</a>
     <a href="{% url 'logout' %}" class="link">Log Out</a>
     <a href="{% url 'index' %}" class="link">Main</a>
     <a href="{% url 'edit' %}" class='button' class="link">Edit</a>
@@ -260,6 +262,7 @@
             {% if profile_image %}
             {% load static %}
             <img src="{% static profile_image %}", alt="userhead", width = 200, height = 120>
+            <!-- <img src="../static/img/dog.jpg", alt="userhead", width = 200, height = 120> -->
             {% else %}
             <img src="../static/img/dog.jpg", alt="userhead", width = 200, height = 120>
             {% endif %}
@@ -290,38 +293,18 @@
         <h1 class = "slider-title">Friends</h1>
         <i class="fas fa-chevron-left prev"></i>
         <i class="fas fa-chevron-right next"></i>
-
+        
         <div class = "post-wrapper">
-          <div class = "post">
-            <img src="../static/img/dog.jpg", alt="picture" class = "slider-image">
-            <div class="post-info">
-              <h4><a href="single.html">Friend Name</a></h4>
+          {% if friends %}
+            {% for f in friends %}
+            <div class = "post">
+              <img src="../static/img/dog.jpg", alt="picture" class = "slider-image">
+              <div class="post-info">
+                <h4><a href="single.html">{{f.username}}</a></h4>
+              </div>
             </div>
-          </div>
-          <div class = "post">
-            <img src="../static/img/dog.jpg", alt="picture" class = "slider-image">
-            <div class="post-info">
-              <h4><a href="single.html">Friend Name</a></h4>
-            </div>
-          </div>
-          <div class = "post">
-            <img src="../static/img/dog.jpg", alt="picture" class = "slider-image">
-            <div class="post-info">
-              <h4><a href="single.html">Friend Name</a></h4>
-            </div>
-          </div>
-          <div class = "post">
-            <img src="../static/img/dog.jpg", alt="picture" class = "slider-image">
-            <div class="post-info">
-              <h4><a href="single.html">Friend Name</a></h4>
-            </div>
-          </div>
-          <div class = "post">
-            <img src="../static/img/dog.jpg", alt="picture" class = "slider-image">
-            <div class="post-info">
-              <h4><a href="single.html">Friend Name</a></h4>
-            </div>
-          </div>
+            {% endfor %}
+          {% endif %}
         </div>
       </div>
       <!-- // post slider -->
