@@ -34,7 +34,6 @@ lazy-object-proxy==1.4.3
 lxml==4.5.2
 mccabe==0.6.1
 messytables==0.15.2
-mod-wsgi==4.7.1
 mysql-connector-python==8.0.20
 mysqlclient==2.0.1
 nltk==3.5

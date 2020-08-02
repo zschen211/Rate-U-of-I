@@ -1,8 +1,0 @@
-打开shell：
-    python manage.py shell
-
-输入：
- >>from apps.models import Place
- >>Place.objects.all().count()
-
-返回数字则成功   
