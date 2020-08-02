@@ -261,8 +261,8 @@
           <div class='profileImage'>
             {% if profile_image %}
             {% load static %}
-            <img src="{% static profile_image %}", alt="userhead", width = 200, height = 120>
-            <!-- <img src="../static/img/dog.jpg", alt="userhead", width = 200, height = 120> -->
+            <!-- <img src="{% static profile_image %}", alt="userhead", width = 200, height = 120> -->
+            <img src="../static/img/dog.jpg", alt="userhead", width = 200, height = 120>
             {% else %}
             <img src="../static/img/dog.jpg", alt="userhead", width = 200, height = 120>
             {% endif %}
@@ -321,41 +321,21 @@
   <div class = "page-wrapper2">
       <!-- post slider -->
       <div class = "post-slider2">
-        <h1 class = "slider-title">Favourite</h1>
+        <h1 class = "slider-title">Recommend</h1>
         <i class="fas fa-chevron-left prev2"></i>
         <i class="fas fa-chevron-right next2"></i>
 
         <div class = "post-wrapper2">
+          {% if rec %}
+          {% for p in rec %}
           <div class = "post">
             <img src="../static/img/hotel.jpg", alt="picture" class = "slider-image">
             <div class="post-info">
-              <h4><a href="single.html">Favourite Place</a></h4>
+              <h4><a href="single.html">{{ p.placeName }}</a></h4>
             </div>
           </div>
-          <div class = "post">
-            <img src="../static/img/nightbar.jpg", alt="picture" class = "slider-image">
-            <div class="post-info">
-              <h4><a href="single.html">Favourite Place</a></h4>
-            </div>
-          </div>
-          <div class = "post">
-            <img src="../static/img/restaurant.jpg", alt="picture" class = "slider-image">
-            <div class="post-info">
-              <h4><a href="single.html">Favourite Place</a></h4>
-            </div>
-          </div>
-          <div class = "post">
-            <img src="../static/img/cafe.jpg", alt="picture" class = "slider-image">
-            <div class="post-info">
-              <h4><a href="single.html">Favourite Place</a></h4>
-            </div>
-          </div>
-          <div class = "post">
-            <img src="../static/img/cat2.jpg", alt="picture" class = "slider-image">
-            <div class="post-info">
-              <h4><a href="single.html">Favourite Place</a></h4>
-            </div>
-          </div>
+          {% endfor %}
+          {% endif %}
         </div>
       </div>
       <!-- // post slider -->

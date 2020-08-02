@@ -56,7 +56,14 @@ def user_register(request):
 
 
 def user_profile(request):
-    implicit_rating()
+    data = implicit_rating()
+    tuple = dissimilarity_matrix(data)
+    rec_ids = recommend(request, tuple[0], tuple[1], data)
+    rec_list = []
+    for id in rec_ids:
+        place = Place.objects.raw('SELECT * FROM apps_place WHERE placeID=%s', [id])[0]
+        rec_list.append(place)
+
     username = request.user.username
     user_info = User.objects.raw(
         "SELECT * FROM apps_user WHERE username = %s", [username]
@@ -70,9 +77,9 @@ def user_profile(request):
         files = os.listdir(image_path)
         profile_image = files[0]
         profile_image = image_path + profile_image
-        return render(request, "user_profile.html", {'user_info': user_info, 'profile_image': profile_image[7:], 'friends':friends})
+        return render(request, "user_profile.html", {'user_info': user_info, 'profile_image': profile_image[7:], 'friends':friends, 'rec':rec_list})
     except:
-        return render(request, "user_profile.html", {'user_info': user_info, 'profile_image': None, 'friends':friends})
+        return render(request, "user_profile.html", {'user_info': user_info, 'profile_image': None, 'friends':friends, 'rec':rec_list})
 
 
 def edit_profile(request):
@@ -115,9 +122,9 @@ def place_detail(request, place_name):
             "SELECT * FROM apps_place WHERE placeName=%s", [place_name]
     )[0]
     comment_list = User.objects.raw('SELECT * FROM apps_comment c JOIN apps_user u ON c.userID_id = u.userID WHERE c.placeID_id=%s', [place.placeID])
-    img_list = get_img(place.img_path)
-    thumbnail = place.img_path[7:] + '/' + img_list[3]
-    # thumbnail = None
+    # img_list = get_img(place.img_path)
+    # thumbnail = place.img_path[7:] + '/' + img_list[3]
+    thumbnail = None
     username = request.user.username
     user_object = User.objects.raw('SELECT * FROM apps_user WHERE username=%s', [username])[0]
     userID = user_object.userID
@@ -209,41 +216,111 @@ def implicit_rating():
     item_count = Place.objects.count()
     user_max_id = User.objects.raw('SELECT * FROM apps_user')[-1].userID
 
-    # generate matrix
-    matrix = [[0 for j in range(user_max_id)] for i in range(item_count)]
+    # generate data
+    data = [[0 for j in range(user_max_id)] for i in range(item_count)]
     for v in views:
-        i = v.placeID_id
+        i = v.placeID_id-1
         j = v.userID_id-1
-        matrix[i][j] += v.view_count
+        data[i][j] += v.view_count
 
     for r in ratings:
-        i = r.placeID_id
-        j = r.userID_id
+        i = r.placeID_id-1
+        j = r.userID_id-1
         rate = r.user_rating
         if rate == 3:
-            matrix[i][j] += 10
+            data[i][j] += 10
         if rate == 4:
-            matrix[i][j] += 20
+            data[i][j] += 20
         if rate == 5:
-            matrix[i][j] += 30
+            data[i][j] += 30
 
     for c in comments:
-        i = c.placeID_id
-        j = c.userID_id
+        i = c.placeID_id-1
+        j = c.userID_id-1
         blob = TextBlob(c.user_comment)
         if blob.sentiment.polarity > 0:
-            matrix[i][j] += 50*blob.sentiment.polarity
+            data[i][j] += 50*blob.sentiment.polarity
 
-    return matrix
+    return data
 
 
-def average_inter_cluster_distance(c1, c2):
-    denominator = 0
-    N1 = len(c1)
-    N2 = len(c2)
-    for m in range(N1):
-        for n in range(N2):
-            d = np.array(c1[m]) - np.array(c2[n])
-            denominator += np.inner(d,d)
+def dissimilarity_matrix(data):
+    data = np.array(data)
+    truncated_data = data[~np.all(data == 0, axis=1)]
 
-    return np.sqrt(denominator/(N1*N2))
+    common = {}
+    i = 0
+    for item in truncated_data:
+        key = i
+        count = np.count_nonzero(item)
+        common[key] = count
+        i += 1
+
+    matrix = [[0 for i in range(len(truncated_data))] for j in range(len(truncated_data))]
+    for i in range(len(matrix)):
+        for j in range(i, len(matrix[0])):
+            if i == j: 
+                continue
+            else:
+                item1 = truncated_data[i]
+                item2 = truncated_data[j]
+                count = 0
+                for k in range(len(item1)):
+                    if item1[k] != 0:
+                        if item2[k] != 0:
+                            count += 1
+                matrix[i][j] = count
+                matrix[j][i] = count
+        
+    # cosine similarity
+    for i in range(len(matrix)):
+        for j in range(i, len(matrix[0])):
+            matrix[i][j] = matrix[i][j]/math.sqrt(common[i]*common[j])
+            matrix[j][i] = matrix[i][j]
+
+    similarity = {}
+    for i in range(len(matrix)):
+        for x in range(len(data)):
+            if np.array_equal(data[x],truncated_data[i]): 
+                index1 = x
+                break 
+        similarity[index1] = []
+        for j in range(len(matrix)):
+            if i != j:
+                for y in range(len(data)):
+                    if np.array_equal(data[y],truncated_data[j]): 
+                        index2 = y
+                        break  
+                similarity[index1].append((index2, matrix[i][j]))
+                
+    
+    return (matrix, similarity)
+
+
+def recommend(request, matrix, similarity_dict, data):
+    data = np.array(data)
+    truncated_data = data[~np.all(data == 0, axis=1)]
+
+    cur_username = request.user.username
+    cur_userID = User.objects.raw('SELECT * FROM apps_user WHERE username=%s', [cur_username])[0].userID
+    rating_list = data[:,cur_userID-1]
+    recommendation = []
+    # print(len(rating_list))
+    for i in range(len(rating_list)):
+        rate = rating_list[i]
+        if rate != 0 and i in similarity_dict:
+            similar_places = similarity_dict[i]
+            for tup in similar_places:
+                index = tup[0]
+                sim = tup[1]
+                if rating_list[index] == 0:
+                    score = sim*rating_list[i]
+                    recommendation.append((index, score))
+
+    # clean recommendation list
+    recommendation = sorted(recommendation, reverse=True)
+    for i in range(len(recommendation)):
+        recommendation[i] = recommendation[i][0]
+    recommendation = set(recommendation)
+
+    return recommendation
