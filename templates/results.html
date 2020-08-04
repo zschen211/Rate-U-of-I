@@ -1,69 +1,32 @@
 <html>
   <head>
     <title>search result</title>
-    <link rel="stylesheet" href="../static/css/results.css">
+    <link rel="stylesheet" href="/static/css/results1.css">
   </head>
   <style>
   </style>
 
-  <h1>Search Results</h1>
+  <body>
 
-  <div class="navbar">
-    <a href="{% url 'index' %}">Home</a>
-
-    <div class="dropdown">
-      <button class="dropbtn">Sort by 
-        <i class="fa fa-caret-down"></i>
-      </button>
-      <div class="dropdown-content">
-        <a href="#">rating</a>
-        <a href="#">popularity</a>
-        <a href="#">distance</a>
-      </div>
-    </div> 
-
-    <div class="search-container">
-      <form action='/search/'>
-        {% csrf_token %}
-        <input type="text" placeholder="Search place.." name="search_content" id="search_thing">
-        <button type="submit"><i class="fa fa-search"></i></button>
-      </form>
+    <div class = "header1">
+        <div class = "userops_2">
+        <li><a id="uops" href="{% url 'index' %}" style="font-size: 18px; padding-left: 20px;">Home</a></li>
+        </div>
+        <a><input type="search" placeholder="Search.."></a>
+          <div class="userops">
+            {% if user.is_authenticated %}
+              <li><a id="uops" href="{% url 'add_friend' %}" style="font-size: 14px">Add Friend</a></li>
+              <li><a id="uops" href="{% url 'profile' %}" style="font-size: 14px">Profile</a></li>
+              <li><a id="uops" href="{% url 'logout' %}" style="font-size: 14px">Log out</a></li>
+            {% else %}
+              <li><a id="uops" href="{% url 'login' %}" style="font-size: 14px">Log In</a></li>
+              <li><a id="uops" href="{% url 'signup' %}" style="font-size: 14px">Sign Up</a></li>
+            {% endif %}
+          </div>
     </div>
 
-    <!-- <div class="dropdown">
-      <button class="dropbtn">Type
-        <i class="fa fa-caret-down"></i>
-      </button>
-      <div class="dropdown-content">
-        <a href="#">type 1</a>
-        <a href="#">type 2</a>
-      </div>
-    </div> 
-
-    <div class="dropdown">
-      <button class="dropbtn">Price
-        <i class="fa fa-caret-down"></i>
-      </button>
-      <div class="dropdown-content">
-        <a href="#">low to high</a>
-        <a href="#">$</a>
-        <a href="#">$$</a>
-        <a href="#">$$$</a>
-        <a href="#">$$$$</a>
-        <a href="#">high to low</a>
-      </div>
-    </div>  -->
-  </div>
-
-  <body>
-    {% if user.is_authenticated %}
-      <p>You've logged in!</p>
-      <a href="{% url 'logout' %}" style="font-size: 16px; text-align: right;">Log out</a>
-    {% else %}
-      <a href="{% url 'login' %}" style="font-size: 16px; text-align: right;">Log In</a>
-      <a href="{% url 'signup' %}" style="font-size: 16px; text-align: right;">Sign Up</a>
-    {% endif %}
-    
+  <h1>Search Results</h1>
+  
     <ul>
 
       {% if place_list %}
@@ -78,11 +41,18 @@
             <p><b>Status:</b>{{p.business_status}}</p>
           </div>
         </li>
+        <br><br>
         {% endfor %}
       {% else %}
         <p>Could not find matching results in database!</p>
       {% endif %}
 
     </ul>
+
+    <footer>
+      <br><br>
+      <p1 style="text-align:left;">About Us</p1>
+    </footer>
+
   </body>
 </html>

@@ -4,7 +4,8 @@
   <link rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@300&display=swap" rel="stylesheet">
-  <link link rel="stylesheet" href="static/css/mpstyle1.css">
+  <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet'>
+  <link rel="stylesheet" href="/static/css/mpstyle.css">
 
   <title>Rate U of I</title>
   </head>
@@ -27,21 +28,20 @@
     <h1>Rate UofI</h1>
     <h3>With Rate U of I, discover quality life.</h3>
 
+    <!--search bar-->
+    <div class="search_container">
+      <form style="text-align:center;" action="/search/">
+        <br><br><br><br><br><br><br><br><br>
+        {% csrf_token %}
+        <label for="fname"></label>
+        <input type="search" id="search_thing" name="search_content" placeholder="Search..." >
+        <button type="submit" id="search_btn"><i class="fa fa-search" style=color:#fff></i></button>
+      </form>
+    </div>
+
   </div>
 
-  <br><br><br><br><br><br>
-
-  <!--search bar-->
-  <div class="search_container">
-    <form style="text-align:center;" action="/search/">
-      <p>Search</p>
-      {% csrf_token %}
-      <label for="fname">Search:</label>
-      <input type="search" id="search_thing" name="search_content" placeholder="Search..." >
-      <button type="submit" id="search_btn"><i class="fa fa-search" style="color:#878787"></i></button>
-    </form>
-  </div>
-
+  <br><br><br><br><br>
   <!--Click the "Submit" button and the form-data will be sent to a page on the server called "action_page.php". -->
 
 
@@ -69,12 +69,29 @@
 
   </div>
 
-  <footer>
-    <br><br>
-    <p1 style="text-align:left;">About Us</p1>
-    <p2 style="text-align:right;">ajfhaskdhfj</p2>
-
-
-  </footer>
+  <div class="footer">
+    <div class="footer-content">
+      <div class="footer-section about">
+        <p style="font-family: 'Cormorant SC', serif; font-size: 30px; padding-top: 5px;">About Us</p>
+        <br><br>
+        <p>Yanxi Zhu &emsp; ECE@illinois<br><br>
+        Zuhan Lin &emsp; PSYC@illinois<br><br>
+        Wang Yao &emsp; ECE@illinois<br><br>
+        Shichen Zhou &emsp; CS@illinois</p>
+      </div>
+      <div class="footer-section information">
+        <p style="font-family: 'Cormorant SC', serif; font-size: 30px; padding-top: 5px;">Contact Info<p>
+        <br><br>
+        <p>yanxiz2@illinois.edu<br><br>
+        zuhanl2@illinois.edu<br><br>
+        wangy2@illinois.edu<br><br>
+        shichen5@illinois.edu</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; RateUofI.com | Designed by 404! Team Name Does Not Exist
+    </div>
+  </div>
+  
   </body>
 </html>

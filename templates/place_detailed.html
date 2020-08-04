@@ -8,16 +8,22 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <link link rel="stylesheet" href="/static/css/detailed.css">
+  <link link rel="stylesheet" href="/static/css/detailed1.css">
+  <script src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+  <script src="/static/js/detail.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" />
+  <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet'>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@300&display=swap" rel="stylesheet">
   <style></style>
 </head>
 <body>
 
-    
     <div class = "header1">
-          <a href="{% url 'index' %}">HOME</a>
-          <a><input type="search" placeholder="Search"></a>
-
+      <div class = "userops_2">
+        <li><a id="uops" href="{% url 'index' %}" style="font-size: 18px; padding-left: 20px;">Home</a></li>
+      </div>
+        <a><input type="search" placeholder="Search.."></a>
           <div class="userops">
             {% if user.is_authenticated %}
               <li><a id="uops" href="{% url 'add_friend' %}" style="font-size: 14px">Add Friend</a></li>
@@ -28,29 +34,45 @@
               <li><a id="uops" href="{% url 'signup' %}" style="font-size: 14px">Sign Up</a></li>
             {% endif %}
           </div>
-    </div> 
-
-      <br><br><br>
-
-      <div style="display:inline-block;">
-        {% load static %}
-          <!-- <img src="{% static img %}" alt="Thumbnail" width=500px height=350px><br><br> -->
-          <img src="../static/img/dog.jpg" alt="Thumbnail" width=500px height=350px><br><br>
-      </div>  
-      <div class = "imageAlign">
-        <h2 style="text-align: center;">{{place.placeName}}</h2><br><br>
-        <p style="text-align: center;"><b>Average Rating: </b>{{place.rating}}</p>
-        <p style="text-align: center;"><b>Location: </b>{{place.vicinity}}</p>
-        <p style="text-align: center;"><b>Price Level: </b>{{place.price_level}}</p>
-        <p style="text-align: center;"><b>Status: </b>{{place.business_status}}</p>
     </div>
-      
-    <hr>
+    <br><br><br>
 
-    <div style="padding-left: 25px; padding-right: 25px;">
+      <div class = "bodybox">
+        <h1 style="padding-left: 45px">{{place.placeName}}</h2><br><br>
+        <p style="padding-left: 45px"><b>Average Rating: </b>{{place.rating}}</p>
+        <p style="padding-left: 45px"><b>Location: </b>{{place.vicinity}}</p>
+        <p style="padding-left: 45px"><b>Price Level: </b>{{place.price_level}}</p>
+        <p style="padding-left: 45px"><b>Status: </b>{{place.business_status}}</p>
+      </div>
+
+      <!-- Page Wrapper -->
+      <div class = "page-wrapper2">
+        <!-- post slider -->
+        <div class = "post-slider2">
+          <h1 class = "slider-title">Photo</h1>
+          <i class="fas fa-chevron-left prev2"></i>
+          <i class="fas fa-chevron-right next2"></i>
+
+          <div class = "post-wrapper2">
+            <!-- Django insert all photo-->
+            {% if rec %}
+            {% for p in rec %}
+            <div class = "post">
+              <img src="../static/img/hotel.jpg", alt="picture" class = "slider-image">
+            </div>
+            {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+        <!-- // post slider -->
+      </div>
+      <!-- //Page Wrapper -->
+
+    <div style="padding-left: 50px; padding-right: 50px;">
+      <hr>
+      <h4 style="font-family: Luida Console;"><b>Rate this place:</b></h4><br>
       <form action="." method="POST">
         {% csrf_token %}
-        <label for="rate">Rate this place:</label><br>
           <select name='rate' required>
             <option>1</option>
             <option>2</option>
@@ -60,7 +82,8 @@
           </select><br><br>
           <button type="submit" class="button">Submit</button>
       </form><br>
-      <h4 style="font-family: Lucida Console;"><b>Leave a Comment:</b></h4><br>
+      <hr>
+      <h4 style="font-family: Luida Console;"><b>Leave a Comment:</b></h4><br>
       <form role="form" action='.' method="POST">
       {% csrf_token %}
         <div class="form-group">
@@ -70,31 +93,48 @@
       </form>
       <br><br>
       
-      <p> Comments:</p><br>
       {% if comment_list %}
+      <h4 style="font-family: 'Luida Console';"><b>Comments:</b></h4><br>
       {% for c in comment_list %}
         <li>
           <div class=itembox>
             <p><b>{{ c.username }}</b></p>
-            <p>{{ c.user_comment }}</p>
+            <p>{{ c.user_comment }}</p><hr>
             {% if user.username == c.username %}
             <form action='.' method="POST">
               {% csrf_token %}
-              <p><input type='submit' value="delete" name='delete' /></p>
+              <button type='submit' value="delete" class='button'>Delete</button>
             </form>
             {% endif %}
           </div>
         </li>
         {% endfor %}
-      {% endif %}
+        {% endif %}
     </div>  
-    
-  </div>
-</div>
 
-<footer class="container-fluid">
-  <a href="{% url 'index' %}" style="font-size: 16px; text-align: center;">About Us</a>
-</footer>
+    <div class="footer">
+    <div class="footer-content">
+      <div class="footer-section about">
+        <p style="font-family: 'Cormorant SC', serif; font-size: 30px; padding-top: 5px;">About Us</p >
+        
+        <p>Yanxi Zhu &emsp; ECE@illinois<br><br>
+        Zuhan Lin &emsp; PSYC@illinois<br><br>
+        Wang Yao &emsp; ECE@illinois<br><br>
+        Shichen Zhou &emsp; CS@illinois</p >
+      </div>
+      <div class="footer-section information">
+        <p style="font-family: 'Cormorant SC', serif; font-size: 30px; padding-top: 5px;">Contact Info<p>
+        
+        <p>yanxiz2@illinois.edu<br><br>
+        zuhanl2@illinois.edu<br><br>
+        wangy2@illinois.edu<br><br>
+        shichen5@illinois.edu</p >
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; RateUofI.com | Designed by 404! Team Name Does Not Exist
+    </div>
+  </div>
 
 </body>
 </html>

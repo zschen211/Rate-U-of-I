@@ -59,8 +59,10 @@ def user_profile(request):
     data = implicit_rating()
     tuple = dissimilarity_matrix(data)
     rec_ids = recommend(request, tuple[0], tuple[1], data)
+    # print(rec_ids)
     rec_list = []
     for id in rec_ids:
+        id += 1
         place = Place.objects.raw('SELECT * FROM apps_place WHERE placeID=%s', [id])[0]
         rec_list.append(place)
 
@@ -68,18 +70,42 @@ def user_profile(request):
     user_info = User.objects.raw(
         "SELECT * FROM apps_user WHERE username = %s", [username]
     )[0]
+
     # get friend list
     current_user = User.objects.raw('SELECT * FROM apps_user WHERE username=%s', [username])[0]
-    friends = Friend.objects.get(current_user=current_user).users.all()
+    try:
+        friends = Friend.objects.get(current_user=current_user).users.all()
+    except:
+        friends = None
+
     # get profile image
     image_path = 'static/img/avatar/' + user_info.username + '/'
+
+    # get friends' comments list 
+    review = User.objects.raw('SELECT * FROM apps_comment LEFT JOIN apps_user ON (apps_comment.userID_id=apps_user.userID)')
+    for i in review:
+        print(i)
+    review_list = []
+    if friends:
+        friends_id = [ f.userID for f in friends ]
+        place_id_list = []
+        for r in review:
+            if r.userID_id in friends_id:
+                tmp_place = Place.objects.raw('SELECT * FROM apps_place WHERE placeID=%s', [r.placeID_id])[0]
+                try:
+                    tmp_rating = Rating.objects.raw('SELECT * FROM apps_rating WHERE placeID_id=%s AND userID_id=%s', [tmp_place.placeID, r.userID_id])[0].user_rating
+                except:
+                    tmp_rating = None
+                r_tuple = (tmp_place.placeName, r.username, r.user_comment, tmp_rating)
+                review_list.append(r_tuple)
+
     try:
         files = os.listdir(image_path)
         profile_image = files[0]
         profile_image = image_path + profile_image
-        return render(request, "user_profile.html", {'user_info': user_info, 'profile_image': profile_image[7:], 'friends':friends, 'rec':rec_list})
+        return render(request, "user_profile.html", {'user_info': user_info, 'profile_image': profile_image[7:], 'friends':friends, 'rec':rec_list, 'review':review_list})
     except:
-        return render(request, "user_profile.html", {'user_info': user_info, 'profile_image': None, 'friends':friends, 'rec':rec_list})
+        return render(request, "user_profile.html", {'user_info': user_info, 'profile_image': None, 'friends':friends, 'rec':rec_list, 'review':review_list})
 
 
 def edit_profile(request):
@@ -122,9 +148,10 @@ def place_detail(request, place_name):
             "SELECT * FROM apps_place WHERE placeName=%s", [place_name]
     )[0]
     comment_list = User.objects.raw('SELECT * FROM apps_comment c JOIN apps_user u ON c.userID_id = u.userID WHERE c.placeID_id=%s', [place.placeID])
-    # img_list = get_img(place.img_path)
-    # thumbnail = place.img_path[7:] + '/' + img_list[3]
-    thumbnail = None
+    img_list = get_img(place.img_path)
+    thumbnail = place.img_path[7:] + '/' + img_list[3]
+    print(thumbnail)
+    # thumbnail = None
     username = request.user.username
     user_object = User.objects.raw('SELECT * FROM apps_user WHERE username=%s', [username])[0]
     userID = user_object.userID
@@ -322,5 +349,12 @@ def recommend(request, matrix, similarity_dict, data):
     for i in range(len(recommendation)):
         recommendation[i] = recommendation[i][0]
     recommendation = set(recommendation)
+
+    # handle cold start
+    if len(recommendation) == 0:
+        query = Place.objects.raw('SELECT * FROM apps_place ORDER BY rating DESC LIMIT 6')
+        recommendation = list(recommendation)
+        for place in query:
+            recommendation.append(place.placeID)
 
     return recommendation

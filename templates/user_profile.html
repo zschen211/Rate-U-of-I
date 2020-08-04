@@ -261,8 +261,8 @@
           <div class='profileImage'>
             {% if profile_image %}
             {% load static %}
-            <!-- <img src="{% static profile_image %}", alt="userhead", width = 200, height = 120> -->
-            <img src="../static/img/dog.jpg", alt="userhead", width = 200, height = 120>
+            <img src="{% static profile_image %}", alt="userhead", width = 200, height = 120>
+            <!-- <img src="../static/img/dog.jpg", alt="userhead", width = 200, height = 120> -->
             {% else %}
             <img src="../static/img/dog.jpg", alt="userhead", width = 200, height = 120>
             {% endif %}
@@ -354,45 +354,28 @@
   <div class = "main-content">
       <h1 class = "title">Reviews</h1>
 
+      {% if review %}
+      {% for r in review %}
       <div class = "post">
         <img src="../static/img/cat.png", alt="picture", width = 300, height = 200 class = "postimg">
         <div class = "post-preview">
-          <h2><a herf="single.html1">Love Cat</a></h2>
-          <i class="far fa-user">User A</i>
+          <h2><a herf="single.html1">{{ r.0 }}</a></h2>
+          <i class="far fa-user">{{ r.1 }}</i>
           &nbsp;
-          <i class="far calender">July 24, 2020</i>
+          {% if r.tmp_rating %}
+          <i class="far calender">{{ r.3 }}</i>
+          {% else %}
+          <i class="far calender">no rating</i>
+          {% endif %}
           <p class = "preview-text">
-            love this cutie; love this cutie; love this cutie; love this cutie;
+            {{ r.2 }}
           </p>
           <a herf="single.html1" class = "btn read-more">Read More</a>
         </div>
       </div>
-      <div class = "post">
-        <img src="../static/img/cat.png", alt="picture", width = 300, height = 200 class = "postimg">
-        <div class = "post-preview">
-          <h2><a herf="single.html1">Love Cat</a></h2>
-          <i class="far fa-user">User A</i>
-          &nbsp;
-          <i class="far calender">July 24, 2020</i>
-          <p class = "preview-text">
-            love this cutie; love this cutie; love this cutie; love this cutie;
-          </p>
-          <a herf="single.html1" class = "btn read-more">Read More</a>
-        </div>
-      </div>
-      <div class = "post">
-        <img src="../static/img/cat.png", alt="picture", width = 300, height = 200 class = "postimg">
-        <div class = "post-preview">
-          <h2><a herf="single.html1">Love Cat</a></h2>
-          <i class="far fa-user">User A</i>
-          &nbsp;
-          <i class="far calender">July 24, 2020</i>
-          <p class = "preview-text">
-            love this cutie; love this cutie; love this cutie; love this cutie;
-          </p>
-          <a herf="single.html1" class = "btn read-more">Read More</a>
-        </div>
-      </div>
+      {% endfor %}
+      {% endif %}
+      
   </div>
   <!-- /main content -->
 
