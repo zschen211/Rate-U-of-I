@@ -4,256 +4,365 @@
   <title>User Profile</title>
   <style>
       body{
-        background: #f5f7f7;
-        padding-top: 100px;
-        font-family: "poppins", sans-serif;
-      }
-      a:link {
-        color: black;
-        text-decoration: none;
-        outline-color: transparent;
-      }
-      a:visited{
-        text-decoration: none;
-      }
-      a:hover{
-        text-decoration: none;
+  background: #f5f7f7;
+}
+.header1 {
+    width: 100%;
+    height: 60px;
+    background-color: #2f3540;
+    display: inline-block;
+}
 
-      }
-      a:active{
-        text-decoration: none;
-      }
-      .login {
-        text-align: right;
-        display: block;
-        font-size: 20px;
-        margin-right: 60px;
-      }
-      .container {
-        width:auto;
-        height:350px;
-        padding: 1%;
-      }
-      .ProfileHeader {
-        background: #c0c0c0;
-        display: flex;
-        width:100%;
-        height: 300px;
-      }
-      .profileNav {
-        justify-content: center;
-        padding-left: 100px;
-      }
-      .profileNav h4 {
-        font-weight: bold;
-      }
-      .Head {
-        float:left;
-      }
-      /*post slider*/
-      .post-slider {
-        position: relative;
-      }
-      .post-slider .slider-title{
-        text-align: center;
-        margin: 30px auto;
-        color: #444;
-      }
-      .post-slider .next{
-        position: absolute;
-        top: 50%;
-        right: 30px;
-        font-size: 2em;
-        color: #006669;
-        cursor: pointer;
-      }
-      .post-slider .prev{
-        position: absolute;
-        top: 50%;
-        left: 30px;
-        font-size: 2em;
-        color: #006669;
-        cursor: pointer;
-      }
+.header1 a {
+    display: inline-block;
+    text-decoration: none;
+    color: rgb(37, 37, 37);
+    font-size: 16px;
+    font-family: 'Cormorant SC', serif;
+    font-variant: small-caps;
+    letter-spacing: 2px;
+    font-weight: 600;
+    padding: 25px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    /* transition: all ease 0.5s; */
+}
+.userops {
+    float: right;
+    list-style: none;
+    margin-top: 16px;
+  }
+.userops li{
+  display: inline-block;
+}
+.userops li a {
+  color: #fff;
+  text-decoration: none;
+  padding: 5px 20px;
+  font-family: 'Cormorant SC', serif;
+  font-weight: bolder;
+}
+.userops li a:hover {
+  background: #fff;
+  color: #333;
+}
+.userops_2 {
+  float: left;
+  list-style: none;
+  margin-top: 16px;
+}
+.userops_2 li{
+  display: inline-block;
+}
+.userops_2 li a {
+  color: #fff;
+  text-decoration: none;
+  padding: 5px 20px;
+  font-family: 'Cormorant SC', serif;
+  font-weight: bolder;
+}
+.userops_2 li a:hover {
+  background: #fff;
+  color: #333;
+}
+a {
+  color: rgb(63, 63, 63);
+  text-decoration: none;
+}
+article {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    padding: 20px;
+  }
+a:link {
+  color: black;
+  text-decoration: none;
+  outline-color: transparent;
+}
+.login {
+  text-align: right;
+  display: block;
+  font-size: 20px;
+  margin-right: 60px;
+}
+.container {
+  width:auto;
+  height:350px;
+  padding: 1%;
+}
+.ProfileHeader {
+  background: white;
+  display: flex;
+  width:100%;
+  height: 300px;
+}
+#profile_img {
+  height: 200px;
+  width: 200px;
+  border-radius: 50%;
+  padding-left: 20px;
+  padding-top: 20px;
+}
+.profileNav {
+  justify-content: center;
+  padding-left: 100px;
+}
+.profileNav h4 {
+  font-weight: bold;
+}
+.Head {
+  float:left;
+}
+/*post slider*/
+.post-slider {
+  position: relative;
+}
+.post-slider .slider-title{
+  text-align: center;
+  margin: 30px auto;
+  color: #444;
+}
+.post-slider .next{
+  position: absolute;
+  top: 50%;
+  right: 30px;
+  font-size: 2em;
+  color: #006669;
+  cursor: pointer;
+}
+.post-slider .prev{
+  position: absolute;
+  top: 50%;
+  left: 30px;
+  font-size: 2em;
+  color: #006669;
+  cursor: pointer;
+}
 
-      .post-slider .post-wrapper {
-        width: 84%;
-        height: 290px;
-        margin: 0px auto;
-        overflow: hidden;
-        padding: 10px 0px 10px 0px;
-      }
-      .post-slider .post-wrapper .post {
-        width: 200px;
-        height: 280px;
-        margin: 0px 10px;
-        display: inline-block;
-        border-radius: 5px;
-      }
-      .post-slider .post-wrapper .post .slider-image{
-        width: 250px;
-        height: 250px;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        border-radius: 120px;
-      }
-      .post-slider .post-wrapper .post .post-info {
-        text-align: center;
-      }
-      .post-slider2 {
-        position: relative;
-      }
-      .post-slider2 .slider-title{
-        text-align: center;
-        margin: 30px auto;
-        color: #444;
-      }
-      .post-slider2 .next2{
-        position: absolute;
-        top: 50%;
-        right: 30px;
-        font-size: 2em;
-        color: #006669;
-        cursor: pointer;
-      }
-      .post-slider2 .prev2{
-        position: absolute;
-        top: 50%;
-        left: 30px;
-        font-size: 2em;
-        color: #006669;
-        cursor: pointer;
-      }
+.post-slider .post-wrapper {
+  width: 84%;
+  height: 290px;
+  margin: 0px auto;
+  overflow: hidden;
+  padding: 10px 0px 10px 0px;
+}
+.post-slider .post-wrapper .post {
+  width: 100px;
+  height: 100px;
+  margin: 0px 10px;
+  display: inline-block;
+  border-radius: 5px;
+}
+.post-slider .post-wrapper .post .slider-image{
+  width: 150px;
+  height: 150px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 120px;
+}
+.post-slider .post-wrapper .post .post-info {
+  text-align: center;
+}
+.post-slider2 {
+  position: relative;
+}
+.post-slider2 .slider-title{
+  text-align: center;
+  margin: 30px auto;
+  color: #444;
+}
+.post-slider2 .next2{
+  position: absolute;
+  top: 50%;
+  right: 30px;
+  font-size: 2em;
+  color: #006669;
+  cursor: pointer;
+}
+.post-slider2 .prev2{
+  position: absolute;
+  top: 50%;
+  left: 30px;
+  font-size: 2em;
+  color: #006669;
+  cursor: pointer;
+}
 
-      .post-slider2 .post-wrapper2 {
-        width: 84%;
-        height: 290px;
-        margin: 0px auto;
-        overflow: hidden;
-        padding: 10px 0px 10px 0px;
-      }
-      .post-slider2 .post-wrapper2 .post {
-        width: 300px;
-        height: 280px;
-        margin: 0px 10px;
-        display: inline-block;
-        background: white;
-        border-radius: 5px;
-      }
-      .post-slider2 .post-wrapper2 .post .slider-image{
-        width: 100%;
-        height: 200px;
-        border-top-left-radius: 5px;
-        border-top-right-radius: 5px;
-      }
-      .post-slider2 .post-wrapper2 .post .post-info {
-        text-align: center;
-      }
-      #buttonfriend {
-        display: inline-block;
-        /* vertical-align: top; */
-        width: 50px;
-        height: 50px;
-        padding: 0%;
-        border-color: transparent;
-      }
-      #f {
-        display: block;
-        width: 50px;
-        height: 50px;
-        padding: 1%;
-      }
+.post-slider2 .post-wrapper2 {
+  width: 84%;
+  height: 290px;
+  margin: 0px auto;
+  overflow: hidden;
+  padding: 10px 0px 10px 0px;
+}
+.post-slider2 .post-wrapper2 .post {
+  width: 300px;
+  height: 280px;
+  margin: 0px 10px;
+  display: inline-block;
+  background: white;
+  border-radius: 5px;
+}
+.post-slider2 .post-wrapper2 .post .slider-image{
+  width: 100%;
+  height: 200px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+.post-slider2 .post-wrapper2 .post .post-info {
+  text-align: center;
+}
+#buttonfriend {
+  display: inline-block;
+  /* vertical-align: top; */
+  width: 50px;
+  height: 50px;
+  padding: 0%;
+  border-color: transparent;
+}
+#f {
+  display: block;
+  width: 50px;
+  height: 50px;
+  padding: 1%;
+}
 
-      .content {
-        width: 90%;
-        margin: 30px auto 30px;
-        background: #f5f7f7;
-      }
-      .clearfix::after {
-        content: '';
-        display: block;
-        clear: both;
-      }
-      .btn{
-        padding: .5rem 1rem;
-        background: #006669;
-        color: white;
-        border: 1px solid transparent;
-        border-radius: .25rem;
-      }
-      .btn_red{
-        padding: .5rem 1rem;
-        background: #B35504;
-        color: white;
-        border: 1px solid transparent;
-        border-radius: .25rem;
-      }
-      .btn:hover{
-        color: white !important;
-        background: #006669;
-      }
-      .content .main-content{
-        width: 100%;
-        float: left;
-      }
-      .content .main-content .post{
-        width: 95%;
-        height: 270px;
-        margin: 20px auto;
-        border-radius: 5px;
-        background: white;
-        position: relative;
-      }
-      .content .main-content .post .read-more {
-        position: absolute;
-        bottom: 10px;
-        right: 10px;
-        border: 1px solid #006669;
-        background: transparent;
-        border-radius: 0px;
-        color: #006669 !important;
-      }
-      .content .main-content .post .read-more:hover{
-        background: #006669;
-        color: white !important;
-        transition: .25s;
-      }
+.content {
+  width: 90%;
+  margin: 30px auto 30px;
+  background: #f5f7f7;
+}
+.clearfix::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.btn{
+  padding: .5rem 1rem;
+  background: #006669;
+  color: white;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+}
+.btn_red{
+  padding: .5rem 1rem;
+  background: #B35504;
+  color: white;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+}
+.btn:hover{
+  color: white !important;
+  background: #006669;
+}
+.content .main-content{
+  width: 100%;
+  float: left;
+}
+.content .main-content .post{
+  width: 95%;
+  height: 270px;
+  margin: 20px auto;
+  border-radius: 5px;
+  background: white;
+  position: relative;
+}
+.content .main-content .post .read-more {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  border: 1px solid #006669;
+  background: transparent;
+  border-radius: 0px;
+  color: #006669 !important;
+}
+.content .main-content .post .read-more:hover{
+  background: #006669;
+  color: white !important;
+  transition: .25s;
+}
 
-      .content .main-content .post .postimg{
-        width: 40%;
-        height: 100%;
-        float: left;
-      }
+.content .main-content .post .postimg{
+  width: 40%;
+  height: 100%;
+  float: left;
+}
 
-      .content .main-content .post .post-preview{
-        width: 55%;
-        padding: 10px;
-        float: right;
-      }
-      .content .main-content .title{
-      margin: 20px;
-      }
+.content .main-content .post .post-preview{
+  width: 55%;
+  padding: 10px;
+  float: right;
+}
+.content .main-content .title{
+margin: 20px;
+}
 
-      .title{
-        color: #444;
-        margin: 20px;
-      }
-      .link {
-        text-align: right;
-        display: block;
-        font-size: 20px;
-        margin-right: 60px;
-      }
+.title{
+  color: #444;
+  margin: 20px;
+}
+.link {
+  text-align: right;
+  display: block;
+  font-size: 20px;
+  margin-right: 60px;
+}
+.footer {
+  margin-top: 80px;
+  background-color: #2f3540;
+  color: #fff;
+  height: 340px;
+  position: relative;
+}
+.footer .footer-content {
+  height: 300px;
+  display: flex;
+}
+.footer .footer-content .footer-section {
+  flex: 1;
+  padding: 25px;
+}
+.footer .footer-bottom {
+  background-color: #434c5c;
+  color: #fff;
+  height: 40px;
+  width: 100%;
+  text-align: center;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  padding-top: 10px;
+}
+
+.footer p {
+  text-align: center;
+  font-family: "Raleway";
+  font-variant: none;
+  font-size: 15px;
+}
   </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" />
   </head>
   <body>
 
-    <a href="{% url 'add_friend' %}" class="link">Add Friend</a>
-    <a href="{% url 'logout' %}" class="link">Log Out</a>
-    <a href="{% url 'index' %}" class="link">Main</a>
-    <a href="{% url 'edit' %}" class='button' class="link">Edit</a>
+    <div class = "header1">
+      <div class = "userops_2">
+        <li><a id="uops" href="{% url 'index' %}" style="font-size: 18px; padding-left: 20px;">RateUofI</a></li>
+      </div>
+          <div class="userops">
+            {% if user.is_authenticated %}
+              <li><a id="uops" href="{% url 'add_friend' %}" style="font-size: 14px;">Add Friend</a></li>
+              <li><a id="uops" href="{% url 'logout' %}" style="font-size: 14px">Log out</a></li>
+            {% else %}
+              <li><a id="uops" href="{% url 'login' %}" style="font-size: 14px">Log In</a></li>
+              <li><a id="uops" href="{% url 'signup' %}" style="font-size: 14px">Sign Up</a></li>
+            {% endif %}
+          </div>
+    </div>
 
     <div class='container'>
 
@@ -261,28 +370,22 @@
           <div class='profileImage'>
             {% if profile_image %}
             {% load static %}
-            <img src="{% static profile_image %}", alt="userhead", width = 200, height = 120>
-            <!-- <img src="../static/img/dog.jpg", alt="userhead", width = 200, height = 120> -->
+            <img src="{% static profile_image %}", alt="userhead", width = 200, height = 120, id='profile_img'>
+            <!-- <img src="../static/img/dog.jpg", alt="userhead", width = 200, height = 120, id='profile_img'> -->
             {% else %}
             <img src="../static/img/dog.jpg", alt="userhead", width = 200, height = 120>
             {% endif %}
           </div>
           <div class='profileNav'>
-            <h2 class='username'>User Name: {{ user_info.username }}</h2>
+            <h2 class='username'>{{ user_info.username }}</h2>
             <h4 class='age'>Age: {{ user_info.age }}</h4>
             <h4 class='gender'>Gender: {{ user_info.gender }}</h4>
             <h4 class='country'>Country: {{ user_info.country }}</h4>
             <h4 class='ethnicity'>Ethnicity: {{ user_info.ethnicity }}</h4>
+            <p>Bio: {{user_info.biography}}</p>
           </div>
         </div>
-
-        <div class='informationLeft'>
-          <div class='bio'>
-            <h4>Bio</h4>
-            <p>{{user_info.biography}}</p>
-          </div>
-        </div>
-
+        <a href="{% url 'edit' %}" class='button' class="link">Edit</a>
     </div>
 
 
@@ -329,9 +432,10 @@
           {% if rec %}
           {% for p in rec %}
           <div class = "post">
-            <img src="../static/img/hotel.jpg", alt="picture" class = "slider-image">
+            {% load static %}
+            <img src="{% static p.1 %}", alt="picture" class = "slider-image">
             <div class="post-info">
-              <h4><a href="single.html">{{ p.placeName }}</a></h4>
+              <h4><a href="single.html">{{ p.0 }}</a></h4>
             </div>
           </div>
           {% endfor %}
@@ -357,7 +461,8 @@
       {% if review %}
       {% for r in review %}
       <div class = "post">
-        <img src="../static/img/cat.png", alt="picture", width = 300, height = 200 class = "postimg">
+        {% load static %}
+        <img src="{% static r.4 %}", alt="picture", width = 300, height = 200 class = "postimg">
         <div class = "post-preview">
           <h2><a herf="single.html1">{{ r.0 }}</a></h2>
           <i class="far fa-user">{{ r.1 }}</i>
@@ -378,10 +483,31 @@
       
   </div>
   <!-- /main content -->
-
-
 </div>
 <!-- /content -->
+
+<div class="footer">
+  <div class="footer-content">
+    <div class="footer-section about">
+      <p style="font-family: 'Cormorant SC', serif; font-size: 30px; padding-top: 5px;">About Us</p >
+      <!-- <br><br> -->
+      <p>Yanxi Zhu &emsp; ECE@illinois<br><br>
+      Zuhan Lin &emsp; PSYC@illinois<br><br>
+      Wang Yao &emsp; ECE@illinois<br><br>
+      Shichen Zhou &emsp; CS@illinois</p >
+    </div>
+    <div class="footer-section information">
+      <p style="font-family: 'Cormorant SC', serif; font-size: 30px; padding-top: 5px;">Contact Info<p>
+      <p>yanxiz2@illinois.edu<br><br>
+      zuhanl2@illinois.edu<br><br>
+      wangy2@illinois.edu<br><br>
+      shichen5@illinois.edu</p >
+    </div>
+  </div>
+  <div class="footer-bottom">
+    &copy; RateUofI.com | Designed by 404! Team Name Does Not Exist
+  </div>
+</div>
 
 
   </body>

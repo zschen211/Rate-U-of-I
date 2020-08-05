@@ -22,7 +22,30 @@ def search(request):
         place_list = Place.objects.raw(
             "(SELECT * FROM apps_place WHERE placeName LIKE %s OR types LIKE %s ORDER BY rating DESC) UNION (SELECT * FROM apps_place WHERE description IS NOT NULL AND description<>'' AND description LIKE %s ORDER BY rating DESC)", [content, content, content]
         )
-        return render(request, 'results.html', {'place_list':place_list})
+
+        # count query
+        count = Place.objects.raw('(SELECT *, COUNT(placeID) AS cnt FROM apps_place WHERE placeName LIKE %s GROUP BY business_status) UNION (SELECT *, COUNT(placeID) AS cnt FROM apps_place WHERE types LIKE %s GROUP BY business_status) UNION (SELECT *, COUNT(placeID) AS cnt FROM apps_place WHERE description LIKE %s GROUP BY business_status)', [content, content, content])
+        status_count = {}
+        for c in count:
+            if c.business_status not in status_count:
+                status_count[c.business_status] = c.cnt
+            else:
+                status_count[c.business_status] += c.cnt
+        status = []
+        for s in status_count:
+            status.append((s, status_count[s]))
+            
+
+        # get thumbnail images 
+        result_list = []
+        for i in range(len(place_list)):
+            place = place_list[i]
+            img_list = get_img(place.img_path)
+            for img in img_list:
+                if img[0:9] == 'thumbnail': 
+                    result_list.append((place.placeName, place.vicinity, place.rating, place.price_level, place.business_status, place.description, place.img_path[7:] + '/' + img))
+
+        return render(request, 'results.html', {'place_list':result_list, 'status':status})
 
 
 def user_register(request):
@@ -64,7 +87,12 @@ def user_profile(request):
     for id in rec_ids:
         id += 1
         place = Place.objects.raw('SELECT * FROM apps_place WHERE placeID=%s', [id])[0]
-        rec_list.append(place)
+        img_list = get_img(place.img_path)
+        for img in img_list:
+            if img[0:9] == 'thumbnail':
+                thumbnail = place.img_path[7:] + '/' + img
+        
+        rec_list.append((place.placeName, thumbnail))
 
     username = request.user.username
     user_info = User.objects.raw(
@@ -96,7 +124,11 @@ def user_profile(request):
                     tmp_rating = Rating.objects.raw('SELECT * FROM apps_rating WHERE placeID_id=%s AND userID_id=%s', [tmp_place.placeID, r.userID_id])[0].user_rating
                 except:
                     tmp_rating = None
-                r_tuple = (tmp_place.placeName, r.username, r.user_comment, tmp_rating)
+                img_list = get_img(tmp_place.img_path)
+                for img in img_list:
+                    if img[0:9] == 'thumbnail':
+                        thumbnail = tmp_place.img_path[7:] + '/' + img
+                r_tuple = (tmp_place.placeName, r.username, r.user_comment, tmp_rating, thumbnail)
                 review_list.append(r_tuple)
 
     try:
@@ -147,10 +179,12 @@ def place_detail(request, place_name):
     place = Place.objects.raw(
             "SELECT * FROM apps_place WHERE placeName=%s", [place_name]
     )[0]
-    comment_list = User.objects.raw('SELECT * FROM apps_comment c JOIN apps_user u ON c.userID_id = u.userID WHERE c.placeID_id=%s', [place.placeID])
+    comment_list = User.objects.raw('(SELECT u.userID, c.placeID_id, c.user_comment AS cnt FROM apps_comment c JOIN apps_user u ON c.userID_id = u.userID WHERE c.placeID_id=%s)', [place.placeID])
     img_list = get_img(place.img_path)
-    thumbnail = place.img_path[7:] + '/' + img_list[3]
-    print(thumbnail)
+    for i in range(len(img_list)):
+        img_list[i] = place.img_path[7:] + '/' + img_list[i]
+        print(img_list[i])
+
     # thumbnail = None
     username = request.user.username
     user_object = User.objects.raw('SELECT * FROM apps_user WHERE username=%s', [username])[0]
@@ -212,13 +246,13 @@ def place_detail(request, place_name):
                     return HttpResponse('Only one comment is allowed for each place!')
                 # get context
                 comment_list = User.objects.raw('SELECT * FROM apps_comment c JOIN apps_user u ON c.userID_id = u.userID WHERE c.placeID_id=%s', [place.placeID])
-                return render(request, 'place_detailed.html', {'place':place, 'comment_list':comment_list, 'img':thumbnail})
+                return render(request, 'place_detailed.html', {'place':place, 'comment_list':comment_list, 'img':img_list})
             else:
-                return render(request, 'place_detailed.html', {'place':place, 'comment_list':comment_list, 'img':thumbnail})
+                return render(request, 'place_detailed.html', {'place':place, 'comment_list':comment_list, 'img':img_list})
         else:
             return redirect("/login/")
     else:
-        return render(request, 'place_detailed.html', {'place':place, 'comment_list':comment_list, 'img':thumbnail})
+        return render(request, 'place_detailed.html', {'place':place, 'comment_list':comment_list, 'img':img_list})
 
 
 def add_friend(request):

@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <link link rel="stylesheet" href="/static/css/detailed1.css">
+  <link link rel="stylesheet" href="/static/css/detailed2.css">
   <script src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
   <script src="/static/js/detail.js"></script>
@@ -21,44 +21,52 @@
 
     <div class = "header1">
       <div class = "userops_2">
-        <li><a id="uops" href="{% url 'index' %}" style="font-size: 18px; padding-left: 20px;">Home</a></li>
+        <li><a id="uops" href="{% url 'index' %}" style="font-size: 18px; padding-left: 20px;">RateUofI</a></li>
       </div>
-        <a><input type="search" placeholder="Search.."></a>
+      <div class="search_container">
+        <form action="/search/">
+          {% csrf_token %}
+          <label for="fname"></label>
+          <input type="search" id="search_thing" name="search_content" placeholder="Search..." >
+          <button type="submit" id="search_btn"><i class="fa fa-search" style=color:#fff></i></button>
+        </form>
+      </div>
           <div class="userops">
             {% if user.is_authenticated %}
-              <li><a id="uops" href="{% url 'add_friend' %}" style="font-size: 14px">Add Friend</a></li>
-              <li><a id="uops" href="{% url 'profile' %}" style="font-size: 14px">Profile</a></li>
-              <li><a id="uops" href="{% url 'logout' %}" style="font-size: 14px">Log out</a></li>
+              <li><a id="uops" href="{% url 'add_friend' %}" style="font-size: 15px;">Add Friend</a></li>
+              <li><a id="uops" href="{% url 'profile' %}" style="font-size: 15px">Profile</a></li>
+              <li><a id="uops" href="{% url 'logout' %}" style="font-size: 15px">Log out</a></li>
             {% else %}
-              <li><a id="uops" href="{% url 'login' %}" style="font-size: 14px">Log In</a></li>
-              <li><a id="uops" href="{% url 'signup' %}" style="font-size: 14px">Sign Up</a></li>
+              <li><a id="uops" href="{% url 'login' %}" style="font-size: 15px">Log In</a></li>
+              <li><a id="uops" href="{% url 'signup' %}" style="font-size: 15px">Sign Up</a></li>
             {% endif %}
           </div>
     </div>
     <br><br><br>
 
       <div class = "bodybox">
-        <h1 style="padding-left: 45px">{{place.placeName}}</h2><br><br>
-        <p style="padding-left: 45px"><b>Average Rating: </b>{{place.rating}}</p>
-        <p style="padding-left: 45px"><b>Location: </b>{{place.vicinity}}</p>
-        <p style="padding-left: 45px"><b>Price Level: </b>{{place.price_level}}</p>
-        <p style="padding-left: 45px"><b>Status: </b>{{place.business_status}}</p>
+        <h1 style="padding-left: 45px; font-family:'Cormorant SC', serif; font-weight:1000;">{{place.placeName}}</h2><br>
+        <p style="padding-left: 45px; font-family:'Cormorant SC', serif; font-weight:1000"><b>Average Rating: </b>{{place.rating}}</p>
+        <p style="padding-left: 45px; font-family:'Cormorant SC', serif; font-weight:1000"><b>Location: </b>{{place.vicinity}}</p>
+        <p style="padding-left: 45px; font-family:'Cormorant SC', serif; font-weight:1000"><b>Price Level: </b>{{place.price_level}}</p>
+        <p style="padding-left: 45px; font-family:'Cormorant SC', serif; font-weight:1000"><b>Status: </b>{{place.business_status}}</p>
       </div>
 
       <!-- Page Wrapper -->
       <div class = "page-wrapper2">
         <!-- post slider -->
         <div class = "post-slider2">
-          <h1 class = "slider-title">Photo</h1>
+          <h1 class = "slider-title" style="font-family:'Cormorant SC'; font-weight:1000;">Photo</h1>
           <i class="fas fa-chevron-left prev2"></i>
           <i class="fas fa-chevron-right next2"></i>
 
           <div class = "post-wrapper2">
             <!-- Django insert all photo-->
-            {% if rec %}
-            {% for p in rec %}
+            {% if img %}
+            {% for p in img %}
+            {% load static %}
             <div class = "post">
-              <img src="../static/img/hotel.jpg", alt="picture" class = "slider-image">
+              <img src="{% static p %}", alt="picture" class = "slider-image">
             </div>
             {% endfor %}
             {% endif %}
@@ -92,7 +100,7 @@
         <button type="submit" class="button">Submit</button>
       </form>
       <br><br>
-      
+
       {% if comment_list %}
       <h4 style="font-family: 'Luida Console';"><b>Comments:</b></h4><br>
       {% for c in comment_list %}
@@ -108,15 +116,15 @@
             {% endif %}
           </div>
         </li>
-        {% endfor %}
-        {% endif %}
-    </div>  
+      {% endfor %}
+      {% endif %}
+    </div>
 
     <div class="footer">
     <div class="footer-content">
       <div class="footer-section about">
         <p style="font-family: 'Cormorant SC', serif; font-size: 30px; padding-top: 5px;">About Us</p >
-        
+
         <p>Yanxi Zhu &emsp; ECE@illinois<br><br>
         Zuhan Lin &emsp; PSYC@illinois<br><br>
         Wang Yao &emsp; ECE@illinois<br><br>
@@ -124,7 +132,7 @@
       </div>
       <div class="footer-section information">
         <p style="font-family: 'Cormorant SC', serif; font-size: 30px; padding-top: 5px;">Contact Info<p>
-        
+
         <p>yanxiz2@illinois.edu<br><br>
         zuhanl2@illinois.edu<br><br>
         wangy2@illinois.edu<br><br>

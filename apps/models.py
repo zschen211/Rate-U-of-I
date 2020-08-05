@@ -24,13 +24,13 @@ class User(models.Model):
     biography = models.CharField(max_length=400, null=True)
 
 class Rating(models.Model):
-    userID = models.ForeignKey('User', on_delete=models.CASCADE,related_name='+')
-    placeID = models.ForeignKey('Place', on_delete=models.CASCADE, related_name='+')
+    userID = models.ForeignKey('User', null=True, on_delete=models.SET_NULL, related_name='+')
+    placeID = models.ForeignKey('Place', null=True, on_delete=models.SET_NULL, related_name='+')
     user_rating = models.FloatField(default=0, null=True)
 
 class Comment(models.Model):
-    userID = models.ForeignKey('User', on_delete=models.CASCADE,related_name='+')
-    placeID = models.ForeignKey('Place', on_delete=models.CASCADE, related_name='+')
+    userID = models.ForeignKey('User', null=True, on_delete=models.SET_NULL, related_name='+')
+    placeID = models.ForeignKey('Place', null=True, on_delete=models.SET_NULL, related_name='+')
     user_comment = models.CharField(max_length=1000, null=True)
 
 class Friend(models.Model):

@@ -1,7 +1,9 @@
 <html>
   <head>
     <title>search result</title>
-    <link rel="stylesheet" href="/static/css/results1.css">
+    <link rel="stylesheet" href="/static/css/results2.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   </head>
   <style>
   </style>
@@ -10,22 +12,34 @@
 
     <div class = "header1">
         <div class = "userops_2">
-        <li><a id="uops" href="{% url 'index' %}" style="font-size: 18px; padding-left: 20px;">Home</a></li>
+        <li><a id="uops" href="{% url 'index' %}" style="font-size: 18px; padding-left: 20px;">RateUofI</a></li>
         </div>
-        <a><input type="search" placeholder="Search.."></a>
+        <div class="search_container">
+          <form action="/search/">
+            {% csrf_token %}
+            <label for="fname"></label>
+            <input type="search" id="search_thing" name="search_content" placeholder="Search..." >
+            <button type="submit" id="search_btn"><i class="fa fa-search" style=color:#fff></i></button>
+          </form>
+        </div>
           <div class="userops">
             {% if user.is_authenticated %}
-              <li><a id="uops" href="{% url 'add_friend' %}" style="font-size: 14px">Add Friend</a></li>
-              <li><a id="uops" href="{% url 'profile' %}" style="font-size: 14px">Profile</a></li>
-              <li><a id="uops" href="{% url 'logout' %}" style="font-size: 14px">Log out</a></li>
+              <li><a id="uops" href="{% url 'add_friend' %}" style="font-size: 16px">Add Friend</a></li>
+              <li><a id="uops" href="{% url 'profile' %}" style="font-size: 16px">Profile</a></li>
+              <li><a id="uops" href="{% url 'logout' %}" style="font-size: 16px">Log out</a></li>
             {% else %}
-              <li><a id="uops" href="{% url 'login' %}" style="font-size: 14px">Log In</a></li>
-              <li><a id="uops" href="{% url 'signup' %}" style="font-size: 14px">Sign Up</a></li>
+              <li><a id="uops" href="{% url 'login' %}" style="font-size: 16px">Log In</a></li>
+              <li><a id="uops" href="{% url 'signup' %}" style="font-size: 16px">Sign Up</a></li>
             {% endif %}
           </div>
     </div>
 
   <h1>Search Results</h1>
+  {% if status %}
+  {% for s in status %}
+    <p style = "padding-left: 55px;">{{s.0}}: {{s.1}}</p>
+  {% endfor %}
+  {% endif %}
   
     <ul>
 
@@ -33,12 +47,15 @@
         {% for p in place_list %}
         <li>
           <div class=itembox>
-            <a href="{% url 'detail' place_name=p.placeName %}" style="font-size: 20px;">{{ p.placeName }}</a>
+            {% load static %}
+            <img src="{% static p.6 %}", alt="picture" align="left" width="300" height="200">
+            <a href="{% url 'detail' place_name=p.0 %}" style="font-size: 20px; padding-left: 10px;">{{ p.0 }}</a>
             <!-- <p style="font-size: 20"><b>{{ p.placeName }}</b></p> -->
-            <p><b>Location:</b>{{p.vicinity}}</p>
-            <p><b>Rating:</b>{{p.rating}}</p>
-            <p><b>Price Level:</b>{{p.price_level}}</p>
-            <p><b>Status:</b>{{p.business_status}}</p>
+            <p><b>&emsp;  Location:</b>{{p.1}}</p>
+            <p><b>&emsp;  Rating:</b>{{p.2}}</p>
+            <p><b>&emsp;  Price Level:</b>{{p.3}}</p>
+            <p><b>&emsp;  Status:</b>{{p.4}}</p>
+            <p><b>&emsp;  Description:</b>{{p.5}}</p>
           </div>
         </li>
         <br><br>
@@ -49,10 +66,28 @@
 
     </ul>
 
-    <footer>
-      <br><br>
-      <p1 style="text-align:left;">About Us</p1>
-    </footer>
+    <div class="footer">
+      <div class="footer-content">
+        <div class="footer-section about">
+          <p style="font-family: 'Cormorant SC', serif; font-size: 30px; padding-top: 5px;">About Us</p >
+          <!-- <br><br> -->
+          <p>Yanxi Zhu &emsp; ECE@illinois<br><br>
+          Zuhan Lin &emsp; PSYC@illinois<br><br>
+          Wang Yao &emsp; ECE@illinois<br><br>
+          Shichen Zhou &emsp; CS@illinois</p >
+        </div>
+        <div class="footer-section information">
+          <p style="font-family: 'Cormorant SC', serif; font-size: 30px; padding-top: 5px;">Contact Info<p>
+          <p>yanxiz2@illinois.edu<br><br>
+          zuhanl2@illinois.edu<br><br>
+          wangy2@illinois.edu<br><br>
+          shichen5@illinois.edu</p >
+        </div>
+      </div>
+      <div class="footer-bottom">
+        &copy; RateUofI.com | Designed by 404! Team Name Does Not Exist
+      </div>
+    </div>
 
   </body>
 </html>
